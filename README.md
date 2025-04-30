@@ -1,44 +1,88 @@
-# Thales Open Source Template Project
+# security-policy-manager-rest-api
 
-Template for creating a new project in the [Thales GitHub organization](https://github.com/ThalesGroup).
+Implements a REST API for the security policy manager module and to manage SSLAs remotely.
 
-Each Thales OSS project repository **MUST** contain the following files at the root:
+## Quick start
 
-- a `LICENSE` which has been chosen in accordance with legal department depending on your needs
+Install :
 
-- a `README.md` outlining the project goals, sponsoring sig, and community contact information, [GitHub tips about README.md](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-readmes)
+```sh
+podman build -f ./Containerfile -t localhost/thales-sslamanager-rest
+```
 
-- a `CONTRIBUTING.md` outlining how to contribute to the project, how to submit a pull request and an issue
+Run :
 
-- a `SECURITY.md` outlining how the security concerns are handled, [GitHub tips about SECURITY.md](https://docs.github.com/en/github/managing-security-vulnerabilities/adding-a-security-policy-to-your-repository)
+```sh
+touch /tmp/ssla.db
+podman run -d \
+  --name sslamanagerrest \
+  -p 8080:80 \
+  -v /tmp/ssla.db:/data/ssla.db \
+  localhost/thales-ssla-manager
+```
 
-Below is an example of the common structure and information expected in a README.
+Try it in your browser at `localhost:8080/docs`.  
+You can use the examples in `examples/ssla/` to submit security policies.  
 
-**Please keep this structure as is and only fill the content for each section according to your project.**
+## OpenAPI specs
 
-If you need assistance or have question, please contact oss@thalesgroup.com
+Read [openapi.json](openapi.json) for information about this REST API endpoints.
 
-## Get started
+Generate it with : 
 
-XXX project purpose it to ...
+```sh
+ssla-manager-rest --dump-openapi -c /dev/null
+```
 
-**Please also add the description into the About section (Description field)**
+## Development
 
-## Documentation
+### Dependencies
 
-Documentation is available at [xxx/docs](https://xxx/docs/).
+You need the Security Policy Manager as a dependency for this project :
 
-You can use [GitHub pages](https://guides.github.com/features/pages/) to create your documentation.
+```sh
+SSLA_MANAGER_VERSION="v0.1.0"
+poetry config repositories.sslamanager <ssla_manager_repo_url>
+poetry add git+<ssla_manager_repo url>#${SSLA_MANAGER_VERSION}
+```
 
-See an example here : https://github.com/ThalesGroup/ThalesGroup.github.io
+### Build
 
-**Please also add the documentation URL into the About section (Website field)**
+Build the wheel file :
 
-## Contributing
+```sh
+./build.sh
+```
 
-If you are interested in contributing to the XXX project, start by reading the [Contributing guide](/CONTRIBUTING.md).
+To build the container image manually :
 
-## License
+```sh
+podman build -f ./Containerfile -t localhost/thales-sslamanager-rest
+```
 
-The chosen license in accordance with legal department must be defined into an explicit [LICENSE](https://github.com/ThalesGroup/template-project/blob/master/LICENSE) file at the root of the repository
-You can also link this file in this README section.
+### Install
+
+Install `sslamanagerrest` in your python environment :
+
+```sh
+./install.sh
+```
+
+Verify :
+
+```sh
+# manual with poetry
+sslamanagerrest --help
+```
+
+### Dev run
+
+```sh
+poetry run python -m sslamanagerrest -c config.yaml
+```
+
+Test with :
+
+```sh
+curl -L localhost:8080/api/v1/health
+```

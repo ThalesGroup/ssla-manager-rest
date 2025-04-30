@@ -1,30 +1,39 @@
-Describe in this file:
+# CONTRIBUTING
 
-- team organization, roles, communication
-- the rules to be respected by your future contributors
+## Contributor License Agreements
 
-# Contributing guidelines
+This repository use the Apache-2.0 license.
 
-## Team organization
+## Contributing repo
 
-### Roles
+To contribute to this project, start creating an issue.
 
-## How to become a contributor
+Once the issue is created, create a new branch or a new fork related to it and push your modification
+inside.
 
-### Contributor License Agreements
+Speak with the maintainers and the developers, get advice and remain active.
 
-### Contributing code
+## Contributing code
+
+Install Poetry to contribute to the implementation. Use poetry to add new dependency or to run python
+tests.
 
 ## Pull Request Checklist
 
-### License
-
-### Coding style
+- Test your implementation.
+- Squash your commits into fewer meaningful commits, then create a pull request.
+- Notify a maintainer to validate.
 
 ### Testing
 
 #### Running sanity check
 
+Use a linter to scan your source code.
+
+A linter will be use by a maintainer to verify the quality of your code.
+
 #### Running unit tests
 
-### Issues management
+```sh
+poetry run coverage run -m pytest
+```
