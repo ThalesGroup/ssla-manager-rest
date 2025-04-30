@@ -1,0 +1,30 @@
+[project]
+name = "sslamanagerrest"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Louis Cailliot",email = "louis.cailliot@thalesgroup.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9.15"
+dependencies = [
+    "fastapi (>=0.115.11,<0.116.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "pydantic (>=2.10.6,<3.0.0)",
+    "python-multipart (>=0.0.20,<0.0.21)",
+    "sslamanager @ git+https://github.com/ThalesGroup/ssla-manager@v0.1.0",
+
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.scripts]
+sslamanagerrest = 'sslamanagerrest.__main__:main'
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.7.0"
+pytest = "^8.3.5"
+

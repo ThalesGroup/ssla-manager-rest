@@ -1,6 +1,6 @@
 # security-policy-manager-rest-api
 
-Implements a REST API for the security policy manager module and to manage SSLAs remotely.
+Implements a REST API for the SSLA manager module and to manage SSLAs remotely.
 
 ## Quick start
 
@@ -18,7 +18,7 @@ podman run -d \
   --name sslamanagerrest \
   -p 8080:80 \
   -v /tmp/ssla.db:/data/ssla.db \
-  localhost/thales-ssla-manager
+  localhost/thales-sslamanager-rest
 ```
 
 Try it in your browser at `localhost:8080/docs`.  
@@ -31,7 +31,7 @@ Read [openapi.json](openapi.json) for information about this REST API endpoints.
 Generate it with : 
 
 ```sh
-ssla-manager-rest --dump-openapi -c /dev/null
+sslamanagerrest --dump-openapi -c /dev/null
 ```
 
 ## Development
@@ -42,8 +42,8 @@ You need the Security Policy Manager as a dependency for this project :
 
 ```sh
 SSLA_MANAGER_VERSION="v0.1.0"
-poetry config repositories.sslamanager <ssla_manager_repo_url>
-poetry add git+<ssla_manager_repo url>#${SSLA_MANAGER_VERSION}
+poetry config repositories.sslamanager https://github.com/ThalesGroup/ssla-manager
+poetry add git+https://github.com/ThalesGroup/ssla-manager#${SSLA_MANAGER_VERSION}
 ```
 
 ### Build

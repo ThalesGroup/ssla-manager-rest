@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsag:AgreementOffer 
+    	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:wsag="http://schemas.ggf.org/graap/2007/03/ws-agreement" 
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate" 
+	xmlns:ccm="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm" 
+
+	xsi:schemaLocation=
+	"http://schemas.ggf.org/graap/2007/03/ws-agreement wsag.xsd 
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate SLAtemplate.xsd 
+	http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm ccm.xsd">
+	
+	<wsag:Name>Secure_Web_Container_and_AAA(CCM)</wsag:Name>
+	<wsag:Context>
+		<wsag:AgreementInitiator>$SPECS-CUSTOMER</wsag:AgreementInitiator>
+		<wsag:AgreementResponder>specs-owner</wsag:AgreementResponder>
+		<wsag:ServiceProvider>AgreementResponder</wsag:ServiceProvider>
+		<wsag:ExpirationTime>2016-04-30T06:00:00</wsag:ExpirationTime>
+		<wsag:TemplateName>SECURE_WEB_SERVER</wsag:TemplateName>
+	</wsag:Context>
+
+	<wsag:Terms>
+		<wsag:All>
+			<wsag:ServiceDescriptionTerm wsag:Name="Secure Web Server Terms" wsag:ServiceName="myservice2">
+				<specs:serviceDescription>
+					<specs:serviceResources>
+						<specs:resourcesProvider id="Eucalyptus" name="SPECStestbed" zone="eucalyptus" description="" maxAllowedVMs="20" label="">
+                            				<specs:VM appliance="emi-0da0b9e4" hardware="c1.medium" description="mos-4.0.0-beta-006-x86_64" />
+                            				<specs:VM appliance="emi-0da0b9e4" hardware="m1.large" description="mos-4.0.0-beta-006-x86_64" />
+                           				<specs:VM appliance="emi-0da0b9e4" hardware="c1.xlarge" description="mos-4.0.0-beta-006-x86_64" />
+						</specs:resourcesProvider>
+                        			<specs:resourcesProvider id="aws-ec2" name="Amazon" zone="us-east-1" description="" maxAllowedVMs="20" label="">
+                            				<specs:VM appliance="us-east-1/ami-ff0e0696" hardware="t1.micro" description="open suse 13.1 on amazon EC2" />
+                        			</specs:resourcesProvider>
+					</specs:serviceResources>
+
+					<specs:capabilities>
+						<!--TLS -->
+						<specs:capability id="TLS" name="Transport Layer Security" description="Capability of ensuring data integrity and mutual authentication between two or more communicating actors" mandatory="no">
+							<specs:controlFramework id="CCM_v3.0" frameworkName="CCM Control framework v3.0">
+								<specs:CCMsecurityControl   name="Encryption and Key Management - Entitlement" control_domain="EKM" id="EKM-01" >
+									<ccm:description>Keys must have identifiable owners (binding keys to identities) and there shall be key management policies.
+									</ccm:description>
+									<ccm:importance_weight>MEDIUM</ccm:importance_weight>									
+								</specs:CCMsecurityControl>
+								
+								<specs:CCMsecurityControl   name="Encryption and Key Management - Sensitive Data Protection" control_domain="EKM" id="EKM-03" >
+									<ccm:description>Policies and procedures shall be established, for the use of encryption protocols for protection of sensitive data in storage (e.g., file servers, databases, and end-user workstations), data in use (memory), and data in transmission (e.g., system interfaces, over public networks, and electronic messaging).
+									</ccm:description>
+									<ccm:importance_weight>MEDIUM</ccm:importance_weight>
+								</specs:CCMsecurityControl>
+								
+								<specs:CCMsecurityControl   name="Identity and Access Management - Credential Lifecycle / Provision Management" control_domain="IAM" id="IAM-02" >
+									<ccm:description>User access policies and procedures shall be established, and supporting business processes and technical measures implemented, for ensuring  appropriate identity, entitlement, and access management for all internal corporate and customer users with access to data and organizationally-owned or managed application interfaces and infrastructure network and systems components.  Some policies, procedures, processes, and measures must incorporate the following: 1-authentication, authorization, and accounting (AAA) rules for access to data and sessions (e.g., encryption and strong/multi-factor, expireable, non-shared authentication secrets) and 2-permissions and supporting capabilities for customer controls over authentication, authorization, and accounting (AAA) rules for access to data and sessions.
+									</ccm:description>
+									<ccm:importance_weight>MEDIUM</ccm:importance_weight>									
+								</specs:CCMsecurityControl>
+								
+								<specs:CCMsecurityControl   name="Identity and Access Management - User Access Authorization" control_domain="IAM" id="IAM-09" >
+									<ccm:description>Provisioning user access (e.g., employees, contractors, customers, business partners and/or supplier relationships) to data and organizationally-owned or managed (physical and virtual) applications, infrastructure systems, and network components shall be authorized by the organization's management prior to access being granted and appropriately restricted as per established policies and procedures. 
+									</ccm:description>
+									<ccm:importance_weight>MEDIUM</ccm:importance_weight>
+								</specs:CCMsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>
+
+                                                <!--AAA -->
+						<specs:capability id="AAA" name="Authentication, Authorization and Auditing" description="Capability of providing identity management and          access control functionalities" mandatory="false">
+                            				<specs:controlFramework id="CCM_v3.0" frameworkName="CCM Control framework v3.0">
+                                				<specs:CCMsecurityControl id="IAM-02" name="Identity and Access Management – Credential Lifecycle/Provision Management" control_domain="IAM">
+                                    					<ccm:description>"User access policies and procedures shall be established,and supporting business processes and technical measures implemented, for ensuring appropriate identity, entitlement, and access management for all internal corporate and customer (tenant) users with access to data and organizationally-owned or managed (physical and virtual) application interfaces and infrastructure network and systems components...
+									</ccm:description>
+                                    					<ccm:importance_weight>MEDIUM</ccm:importance_weight>
+                                				</specs:CCMsecurityControl>
+                                				<specs:CCMsecurityControl id="IAM-04" name="Identity and Access Management - Policies and Procedures" control_domain="IAM">
+                                    					<ccm:description>Policies and procedures shall be established to store and manage identity information about every person who accesses IT infrastructure and to determine their level of access. Policies shall also be developed to control access to network resources based on user identity.
+			 		    				</ccm:description>
+                                    					<ccm:importance_weight>MEDIUM</ccm:importance_weight>
+                                				</specs:CCMsecurityControl>
+                            				</specs:controlFramework>
+                        			</specs:capability>
+					</specs:capabilities>
+
+					<specs:security_metrics>
+						<!-- each metric includes the abstract metric definition and the concrete metric -->
+
+						<!--  ************************************************************************************** -->
+						
+						<!-- security metrics for TLS -->
+		
+						<!-- M3 -->
+						<specs:Metric name="TLS cryptographic strength" referenceId="tls_crypto_strength">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>0</specs:intervalItemStart>
+										<specs:intervalItemStop>8</specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>Cryptographic strength 
+								</specs:expression>
+								<specs:definition>This metric sets the cryptographic strength to be used by the TLS Terminator. TLS Terminator Configurator will choose the appropriate cryptographic ciphers that meet the negotiated level, and configure TLS Terminator accordingly.
+								</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						<!-- M4 -->
+						<specs:Metric name="Forward secrecy" referenceId="forward_secrecy">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>forward secrecy is activated</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>forward secrecy is not activated</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Forward secrecy
+								</specs:expression>
+								<specs:definition>This metric ensures that the encrypted data sent through a session of the TLS secure channel cannot be decrypted even if the cryptographic data, used to generate the cryptographic credentials for that session, are compromised.
+								</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						
+						<!-- M5 -->
+						<specs:Metric name="HTTP strict transport security (HSTS)" referenceId="hsts">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>hsts is activated</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>hsts is not activated</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>HTTP strict transport security 
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP transport layer that declares the web content available only over a secure HTTP connection.
+								</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						
+						<!-- M6 -->
+						<specs:Metric name="HTTP to HTTPS redirects" referenceId="https_redirect">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>HTTPS redirect is forced</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>HTTPS redirect is not forced</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>HTTP to HTTPs redirect 
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP delivery service that forces clients to use only secure HTTP protocol.
+								</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						
+						<!-- M7 -->
+						<specs:Metric name="Secure Cookies" referenceId="secure_cookies">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>Secure cookies forced</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>Secure cookies not forced</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Secure cookies
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP protocol to force the clients to download session cookies, delivered by the HTTP services, only through a secured HTTP communication
+								</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						
+						<!-- M10 -->
+						<specs:Metric name="Certificate pinning" referenceId="certificate_pinning">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>Certificate pinning forced</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>Certificate pinning not forced</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Certificate pinning
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP protocol allowing the verification of the SSL certificates between the client and the HTTP service where the hash of the public certificate is pinned into the HTTP response.
+								</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						<!-- measurements related to TLS -->
+						<specs:Metric name="Availability of the TLS Terminator" referenceId="tls_terminator_availability_tls_msr1">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>TLS Terminator available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>TLS Terminator not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the TLS Terminator component</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						<specs:Metric name="Availability of the TLS Endpoint" referenceId="tls_endpoint_availability_tls_msr2">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>TLS Endpoint available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>TLS Endpoint not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the TLS Endpoint component</specs:definition>
+								<specs:note>TLS</specs:note>
+							</specs:MetricDefinition>
+						</specs:Metric>
+						
+						<!-- security metrics for AAA -->
+
+						<specs:Metric name="Secure delegated Access" referenceId="secure_delegated_access">
+                            				<specs:MetricDefinition>
+                                				<specs:unit name="">
+                                    					<specs:enumUnit>
+                                        					<specs:enumItemsType>boolean</specs:enumItemsType>
+                                        					<specs:enumItems>
+                                            						<specs:enumItem>
+																		<specs:value>yes</specs:value>
+																		<specs:description></specs:description>
+																	</specs:enumItem>
+                                            						<specs:enumItem>
+																		<specs:value>no</specs:value>
+																		<specs:description></specs:description>
+																	</specs:enumItem>
+                                        					</specs:enumItems>
+                                    					</specs:enumUnit>
+                                				</specs:unit>
+                                				<specs:scale>
+                                    					<specs:Quantitative>Ratio</specs:Quantitative>
+                               					</specs:scale>
+                                				<specs:expression>The installation of an OAuth server</specs:expression>
+                                				<specs:definition>This metric ensures that an OAuth Server is configured to ensure authentication and authorization of users and secure delegated access to the users’ resources to registered 	clients.</specs:definition>
+                                				<specs:note>AAA</specs:note>
+                            				</specs:MetricDefinition>
+                        			</specs:Metric>
+
+                        			<specs:Metric name="Access report generation frequency " referenceId="access_report_generation_freq">
+                            				<specs:MetricDefinition>
+                                				<specs:unit name="hours">
+                                    					<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop>24</specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+                                				</specs:unit>
+                                				<specs:scale>
+                                    					<specs:Quantitative>Ratio</specs:Quantitative>
+                                				</specs:scale>
+                                				<specs:expression>The frequency of report generation</specs:expression>
+                                				<specs:definition>This metric sets the frequency of access reports generation.For example, for access_report_gen_frequency=12, SPECS ensures that a report is generated at least once every 12 	hours.</specs:definition>
+                                				<specs:note>AAA</specs:note>
+                            				</specs:MetricDefinition>
+                        			</specs:Metric>
+
+						<specs:Metric name="AAA Log Completeness " referenceId="aaa_log_completeness">
+                            				<specs:MetricDefinition>
+                                				<specs:unit name="">
+                                    					<specs:enumUnit>
+                                        					<specs:enumItemsType>string</specs:enumItemsType>
+                                        					<specs:enumItems>
+                                            						<specs:enumItem>
+                                                						<specs:value>LOW</specs:value>
+                                                   						<specs:description>Low completeness</specs:description>
+                                            						</specs:enumItem>
+                                            						<specs:enumItem>
+                                                						<specs:value>MEDIUM</specs:value>
+                                                						<specs:description>Medium  completeness</specs:description>
+                                            						</specs:enumItem>
+                                            						<specs:enumItem>
+                                                						<specs:value>HIGH</specs:value>
+                                                						<specs:description>High  completeness</specs:description>
+                                            						</specs:enumItem>
+                                        					</specs:enumItems>
+                                    					</specs:enumUnit>
+                                				</specs:unit>
+                                				<specs:scale>
+                                    					<specs:Quantitative>Ratio</specs:Quantitative>
+                                				</specs:scale>
+                                				<specs:expression>The level of completeness of report</specs:expression>
+                                				<specs:definition>This metric represents how detailed the access reports must be. The possible values are: LOW - MEDIUM -HIGH</specs:definition>
+                                				<specs:note>AAA</specs:note>
+                            				</specs:MetricDefinition>
+                        			</specs:Metric>
+					</specs:security_metrics>
+				</specs:serviceDescription>
+			</wsag:ServiceDescriptionTerm>
+
+			<wsag:ServiceReference wsag:Name="SecureWebServer_endpoint" wsag:ServiceName="SecureWebServer">
+				<specs:endpoint>http://specs/application-endpoint</specs:endpoint>
+			</wsag:ServiceReference>
+
+
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='TLS']" wsag:ServiceName="SecureWebServer">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="specs_TLS_M3" wsag:Metric="tls_crypto_strength_m3">
+						<wsag:Location>//specs:CCMsecurityControl[@id='EKM-01']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M4" wsag:Metric="forward_secrecy_m4">
+						<wsag:Location>//specs:CCMsecurityControl[@id='EKM-03']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M5" wsag:Metric="hsts_m5">
+						<wsag:Location>//specs:CCMsecurityControl[@id='IAM-02']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M6" wsag:Metric="https_redirect_m6">
+						<wsag:Location>//specs:CCMsecurityControl[@id='EKM-03']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M7" wsag:Metric="secure_cookies_m7">
+						<wsag:Location>//specs:CCMsecurityControl[@id='EKM-03']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M10" wsag:Metric="ceritificate_pinning_m10">
+						<wsag:Location>//specs:CCMsecurityControl[@id='IAM-09']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='AAA']" wsag:ServiceName="SecureStorageAAA">
+                		<wsag:VariableSet>
+                    			<wsag:Variable wsag:Name="specs_aaa_m3" wsag:Metric="secure_delegated_access">
+                        			<wsag:Location>//specs:CCMsecurityControl[@ccm:id='IAM-02'] | //specs:CCMsecurityControl[@ccm:id='IAM-04']</wsag:Location>
+                    			</wsag:Variable>
+						<wsag:Variable wsag:Name="specs_aaa_m3" wsag:Metric="access_report_generation_freq">
+                        			<wsag:Location>//specs:CCMsecurityControl[@ccm:id='IAM-02'] | //specs:CCMsecurityControl[@ccm:id='IAM-04']</wsag:Location>
+                    			</wsag:Variable>
+						<wsag:Variable wsag:Name="specs_aaa_m3" wsag:Metric="aaa_log_completeness">
+                        			<wsag:Location>//specs:CCMsecurityControl[@ccm:id='IAM-02'] | //specs:CCMsecurityControl[@ccm:id='IAM-04']</wsag:Location>
+                    			</wsag:Variable>
+                		</wsag:VariableSet>
+            		</wsag:ServiceProperties>
+			
+			<!-- TLS related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='TLS']" wsag:Obligated="ServiceProvider">
+
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="tls_slo1">
+								<specs:MetricREF>tls_crypto_strength</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>7</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>
+								<specs:importance_weight>HIGH</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo2">
+								<specs:MetricREF>forward_secrecy</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>
+								<specs:importance_weight>HIGH</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo3">
+								<specs:MetricREF>hsts</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>HIGH</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo4">
+								<specs:MetricREF>https_redirect</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo5">
+								<specs:MetricREF>secure_cookies</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo6">
+								<specs:MetricREF>certificate_pinning</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>LOW</specs:importance_weight>
+							</specs:SLO>
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+
+			<!-- AAA related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='AAA']" wsag:Obligated="ServiceProvider">
+                		<wsag:ServiceScope wsag:ServiceName="SecureStorageAAA"/>
+                		<wsag:QualifyingCondition>false</wsag:QualifyingCondition>
+                		<wsag:ServiceLevelObjective>
+                    			<wsag:CustomServiceLevel>
+                        			<specs:objectiveList>
+                            				<specs:SLO SLO_ID="aaa_slo1">
+                                				<specs:MetricREF>secure_delegated_access</specs:MetricREF>
+                                				<specs:SLOexpression>
+                                    					<specs:oneOpExpression>
+                                        					<specs:operator>eq</specs:operator>
+                                        					<specs:operand>yes</specs:operand>
+                                    					</specs:oneOpExpression>
+                                				</specs:SLOexpression>
+                                				<specs:importance_weight>HIGH</specs:importance_weight>
+                            				</specs:SLO>
+                            				<specs:SLO SLO_ID="aaa_slo2">
+                                				<specs:MetricREF>access_report_generation_freq</specs:MetricREF>
+                                				<specs:SLOexpression>
+                                    					<specs:oneOpExpression>
+                                        					<specs:operator>lt</specs:operator>
+                                        					<specs:operand>24</specs:operand>
+                                    					</specs:oneOpExpression>
+                                				</specs:SLOexpression>
+                               					<specs:importance_weight>MEDIUM</specs:importance_weight>
+                            				</specs:SLO>
+                            				<specs:SLO SLO_ID="aaa_slo3">
+                                				<specs:MetricREF>aaa_log_completeness</specs:MetricREF>
+                                				<specs:SLOexpression>
+                                    					<specs:oneOpExpression>
+                                        					<specs:operator>eq</specs:operator>
+                                        					<specs:operand>MEDIUM</specs:operand>
+                                    					</specs:oneOpExpression>
+                                				</specs:SLOexpression>
+                                				<specs:importance_weight>LOW</specs:importance_weight>
+                            				</specs:SLO>
+                        			</specs:objectiveList>
+                    			</wsag:CustomServiceLevel>
+                		</wsag:ServiceLevelObjective>
+                		<wsag:BusinessValueList></wsag:BusinessValueList>
+            		</wsag:GuaranteeTerm>
+		</wsag:All>
+	</wsag:Terms>
+</wsag:AgreementOffer>

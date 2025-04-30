@@ -1,0 +1,2033 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsag:AgreementOffer 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:wsag="http://schemas.ggf.org/graap/2007/03/ws-agreement" 
+	xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate" 
+	xmlns:nist="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist" 
+
+	xsi:schemaLocation=
+	"http://schemas.ggf.org/graap/2007/03/ws-agreement wsag.xsd 
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate SLAtemplate.xsd 
+	http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist nist.xsd">
+	
+
+	<wsag:Name>WebPool_SVA_OSSEC_TLS</wsag:Name>
+	<wsag:Context>
+		<wsag:AgreementInitiator>$SPECS-CUSTOMER</wsag:AgreementInitiator>
+		<wsag:AgreementResponder>$SPECS-APPLICATION</wsag:AgreementResponder>
+		<wsag:ServiceProvider>AgreementResponder</wsag:ServiceProvider>
+		<wsag:ExpirationTime>2016-04-30T06:00:00</wsag:ExpirationTime>
+		<wsag:TemplateName>SECURE_WEB_SERVER</wsag:TemplateName>
+	</wsag:Context>
+
+	<wsag:Terms>
+		<wsag:All>
+			<wsag:ServiceDescriptionTerm wsag:Name="Secure Web Server" wsag:ServiceName="SecureWebServer">
+				<specs:serviceDescription>
+					<specs:serviceResources>
+						<specs:resourcesProvider id="ec2" name="cloud.info.uvt.ro" zone="eucalyptus" description="" maxAllowedVMs="20" label="">
+							<specs:VM appliance="emi-65c3e382" hardware="m1.small" description="mos-4.0.0-beta-006-x86_64" />
+							<specs:VM appliance="emi-65c3e382" hardware="m1.medium" description="mos-4.0.0-beta-006-x86_64" />
+							<specs:VM appliance="emi-65c3e382" hardware="m1.large" description="mos-4.0.0-beta-006-x86_64" />
+							<specs:VM appliance="emi-65c3e382" hardware="c1.xlarge" description="mos-4.0.0-beta-006-x86_64" />
+						</specs:resourcesProvider>
+					</specs:serviceResources>
+
+					<specs:capabilities>
+						<specs:capability id="WEBPOOL" name="Web Resilience" description="Capability of surviving to security incidents involving a web server, by implementing proper strategies aimed at preserving business continuity, achieved through redundancy and/or diversity." mandatory="yes">
+							<specs:controlFramework id="NIST_800_53_r4" frameworkName="NIST Control framework 800-53 rev. 4">
+
+								<specs:NISTsecurityControl id="WEBPOOL_NIST_CP_2" name="CONTINGENCY PLAN - CP-2" control_family="CP" securityControl="2" control_enhancement="0">
+									<nist:description>The organization develops a contingency plan for the information system for achieving continuity of operations for mission/business functions. Contingency planning addresses both information system restoration and implementation of alternative mission/business processes when systems are compromised.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="WEBPOOL_NIST_SC_29" name="HETEROGENEITY - SC-29" control_family="SC" securityControl="29" control_enhancement="0">
+									<nist:description>The organization employs a diverse set of information technologies for information system components in the implementation of the information system. In particular, the organization employs virtualization techniques to support the deployment of a diversity of applications.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="WEBPOOL_NIST_SC_36" name="DISTRIBUTED PROCESSING AND STORAGE - SC-36" control_family="SC" securityControl="36" control_enhancement="0">
+									<nist:description>The organization distributes processing and storage across multiple physical locations.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="WEBPOOL_NIST_SC_5" name="DENIAL OF SERVICE PROTECTION - SC-5" control_family="SC" securityControl="5" control_enhancement="0">
+									<nist:description>The information system protects against or limits the effects of denial of service attacks by employing proper security safeguards.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>
+
+						<!--
+						<specs:capability id="OPENVAS" name="Vulnerability Scanning" description="Capability of detecting the vulnerabilities a machine (along with the installed software) is subject to." mandatory="no">
+							<specs:controlFramework id="NIST_800_53_r4" frameworkName="NIST Control framework 800-53 rev. 4">
+								<specs:NISTsecurityControl id="OPENVAS_NIST_CA_7" name="CONTINUOUS MONITORING - CA-7" control_family="CA" securityControl="7" control_enhancement="0">
+									<nist:description>The organization develops a continuous monitoring strategy and implements a continuous monitoring program, which includes the selection of proper metrics, the definition of a monitoring frequency, the establishment of response actions to address results of the analysis of security-related information and the reporting of the security status with a defined frequency.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OPENVAS_NIST_CA_7_3" name="CONTINUOUS MONITORING | TREND ANALYSES - CA-7(3)" control_family="CA" securityControl="7" control_enhancement="3">
+									<nist:description>The organization employs trend analysis to determine if security control implementations, the frequency of continuous monitoring activities, and/or the types of activities used in the continuous monitoring process need to be modified based on empirical data.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OPENVAS_NIST_CA_8" name="PENETRATION TESTING - CA-8" control_family="CA" securityControl="8" control_enhancement="0">
+									<nist:description>The organization conducts penetration testing with a defined frequency on the system.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OPENVAS_NIST_RA_5" name="VULNERABILITY SCANNING - RA-5" control_family="RA" securityControl="5" control_enhancement="0">
+									<nist:description>The organization scans for vulnerabilities in the information system and hosted applications with a defined frequency and when new vulnerabilities potentially affecting the system/applications are identified and reported by adopting vulnerability scanning tools that are able to enumerate platforms, software flaws and improper configurations. The organization analyzes vulnerability scan reports and results and is able to perform a remediation in a given time period.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OPENVAS_NIST_RA_5_1" name="VULNERABILITY SCANNING | UPDATE BY FREQUENCY - RA-5(1)" control_family="RA" securityControl="5" control_enhancement="1">
+									<nist:description>The organization updates the information system vulnerabilities scanned with a defined frequency</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>
+						-->
+						
+						<!--  OSSEC  -->
+						<specs:capability id="OSSEC" name="DOS Detection and Mitigation" description="Capability of detecting and reacting to security attacks aimed at distrupting a system's availability." mandatory="no">
+							<specs:controlFramework id="NIST_800_53_r4" frameworkName="NIST Control framework 800-53 rev. 4">
+								<specs:NISTsecurityControl id="OSSEC_NIST_SC_5" name="DENIAL OF SERVICE PROTECTION - SC-5" control_family="SC" securityControl="5" control_enhancement="0">
+									<nist:description>The information system protects against or limits the effects of denial of service attacks by employing proper security safeguards.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OSSEC_NIST_SC_5_3" name="DENIAL OF SERVICE PROTECTION - SC-5(3)" control_family="SC" securityControl="5" control_enhancement="3">
+									<nist:description>The information system protects against or limits the effects of denial of service attacks by employing proper security safeguards.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OSSEC_NIST_CA_7" name="CONTINUOUS MONITORING - CA-7" control_family="CA" securityControl="7" control_enhancement="0">
+									<nist:description>The organization develops a continuous monitoring strategy and implements a continuous monitoring program, which includes the selection of proper metrics, the definition of a monitoring frequency, the establishment of response actions to address results of the analysis of security-related information and the reporting of the security status with a defined frequency.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="OSSEC_NIST_SI_4" name="INFORMATION SYSTEM MONITORING - SI-4" control_family="SI" securityControl="4" control_enhancement="0">
+									<nist:description>The organization monitors the information system to detect attacks and indicators of potential attacks in accordance with a defined monitoring objectives and unauthorized local, network, and remote connections. It identifies unauthorized use of the information system and deploys proper monitoring tools to collect information about the system.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>
+						
+					
+						<!--SVA -->
+						<specs:capability id="SVA" name="Software Vulnerability Assessment" description="Capability of detecting and mitigating vulnerabilities " mandatory="no">
+							<specs:controlFramework id="NIST_800_53_r4" frameworkName="NIST Control framework 800-53 rev. 4">
+								<specs:NISTsecurityControl id="SVA_NIST_CA_7" name="CONTINUOUS MONITORING - CA-7" control_family="CA" securityControl="7" control_enhancement="0">
+									<nist:description>The organization develops a continuous monitoring strategy and implements a continuous monitoring program, which includes the selection of proper metrics, the definition of a monitoring frequency, the establishment of response actions to address results of the analysis of security-related information and the reporting of the security status with a defined frequency.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="SVA_NIST_CA_7_3" name="CONTINUOUS MONITORING | TREND ANALYSES - CA-7(3)" control_family="CA" securityControl="7" control_enhancement="3">
+									<nist:description>The organization employs trend analysis to determine if security control implementations, the frequency of continuous monitoring activities, and/or the types of activities used in the continuous monitoring process need to be modified based on empirical data.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="SVA_NIST_CA_8" name="PENETRATION TESTING - CA-8" control_family="CA" securityControl="8" control_enhancement="0">
+									<nist:description>The organization conducts penetration testing with a defined frequency on the system.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="SVA_NIST_RA_5" name="VULNERABILITY SCANNING - RA-5" control_family="RA" securityControl="5" control_enhancement="0">
+									<nist:description>The organization scans for vulnerabilities in the information system and hosted applications with a defined frequency and when new vulnerabilities potentially affecting the system/applications are identified and reported by adopting vulnerability scanning tools that are able to enumerate platforms, software flaws and improper configurations. The organization analyzes vulnerability scan reports and results and is able to perform a remediation in a given time period.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="SVA_NIST_RA_5_1" name="VULNERABILITY SCANNING | UPDATE BY FREQUENCY - RA-5(1)" control_family="RA" securityControl="5" control_enhancement="1">
+									<nist:description>The organization updates the information system vulnerabilities scanned with a defined frequency</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+							</specs:controlFramework>
+						</specs:capability>
+						
+						<!--TLS -->
+						<specs:capability id="TLS" name="Transport Layer Security" description="Capability of ensuring data integrity and mutual authentication between two or more communicating actors" mandatory="no">
+							<specs:controlFramework id="NIST_800_53_r4" frameworkName="NIST Control framework 800-53 rev. 4">
+								<specs:NISTsecurityControl id="TLS_NIST_SC_8" name="TRANSMISSION CONFIDENTIALITY AND INTEGRITY - SC-8" control_family="SC" securityControl="8" control_enhancement="0">
+									<nist:description>The information system protects the [Selection (one or more): confidentiality; integrity] of transmitted information.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="TLS_NIST_SC_12" name="CRYPTOGRAPHIC KEY ESTABLISHMENT AND MANAGEMENT - SC-12" control_family="SC" securityControl="12" control_enhancement="0">
+									<nist:description>The organization establishes and manages cryptographic keys for required cryptography employed within the information system in accordance with [Assignment: organization-defined requirements for key generation, distribution, storage, access, and destruction].</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="TLS_NIST_SC_13" name="CRYPTOGRAPHIC PROTECTION - SC-13" control_family="SC" securityControl="13" control_enhancement="0">
+									<nist:description>The information system implements [Assignment: organization-defined cryptographic uses and type of cryptography required for each use] in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="TLS_NIST_SC_17" name="PUBLIC KEY INFRASTRUCTURE CERTIFICATES - SC-17" control_family="SC" securityControl="17" control_enhancement="0">
+									<nist:description>The organization issues public key certificates under an [Assignment: organization-defined certificate policy] or obtains public key certificates from an approved service provider.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="TLS_NIST_SC_29" name="HETEROGENEITY - SC-29" control_family="SC" securityControl="29" control_enhancement="0">
+									<nist:description>The organization employs a diverse set of information technologies for information system components in the implementation of the information system. In particular, the organization employs virtualization techniques to support the deployment of a diversity of applications.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>
+								<specs:NISTsecurityControl id="TLS_NIST_SC_43" name="USAGE RESTRICTIONS - SC-43" control_family="SC" securityControl="43" control_enhancement="0">
+									<nist:description>The organization: a.Establishes usage restrictions and implementation guidance for [Assignment: organization-defined information system components] based on the potential to cause damage to the information system if used maliciously; and b. Authorizes, monitors, and controls the use of such components within the information system.</nist:description>
+									<nist:importance_weight>MEDIUM</nist:importance_weight>
+								</specs:NISTsecurityControl>	
+							</specs:controlFramework>
+						</specs:capability>
+					</specs:capabilities>
+
+					
+					<specs:security_metrics>
+						<!-- each metric includes the abstract metric definition and the concrete metric -->
+						
+
+						<!--  ************************************************************************************** -->
+						<!-- security metrics for WEBPOOL -->
+					
+						<!-- M1 -->
+						<specs:Metric name="Level of Redundancy" referenceId="level_of_redundancy_m1">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>The number of replicas of the Web Container that are set-up and kept active throughout 
+								the service operation to ensure redundancy.
+								It is measured through measurement "number_of_servers_wp_msr1"</specs:expression>
+								<specs:definition>This abstract metric expresses the number of replicas of a software component that are 
+								set-up and kept active during system operation</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Level of Redundancy Check Strategy" referenceId="AMR_LoR_CheckStrategy">
+									<specs:definition>This rule defines how to check the number of active replicas: the check may be done 
+									according to different strategies:{ping,heartbit}</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Level of Redundancy Observation Interval" referenceId="AMP_LoR_ObservationInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent 
+									observations</specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_LoR_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>ping</specs:value>
+									<specs:note>The check of active replicas is done by pinging them at defined time intervals</specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_LoR_ObservationInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>The check is done every hour</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<!-- measurement related to M1 -->
+						<specs:Metric name="Number of servers" referenceId="number_of_servers_wp_msr1">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression> </specs:expression>
+								<specs:definition>Number of responsive web servers running on the system, measured by the load balancer.
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Number of Servers Check Strategy" referenceId="AMR_NoS_CheckStrategy">
+									<specs:definition>This rule defines how to check the number of responsive web servers</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Number of Servers Check Interval" referenceId="AMP_NoS_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks</specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_NoS_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>ping</specs:value>
+									<specs:note>The check of active replicas is done by the Load Balancer by pinging them at defined time intervals</specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_NoS_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>The check is done every hour</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						
+						<!-- M2 -->
+						<specs:Metric name="Level of Diversity" referenceId="level_of_diversity_m2">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>The number of different software and/or hardware versions of the Web Container service 
+								that are set-up and kept active throughout the service operation to increase the protection from attacks 
+								and vulnerabilities exploits.
+								It is measured through measurement "diversity_level_wp_msr2" </specs:expression>
+								<specs:definition>This abstract metric expresses the number of replicas of a software component that are 
+								set-up and kept active during system operation</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Level of Diversity Check Strategy" referenceId="AMR_LoD_CheckStrategy">
+									<specs:definition>This rule defines how to check the number of different active replicas: the check may be done 
+									according to different strategies</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Level of Diversity Check Interval" referenceId="AMP_LoD_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent observations</specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_LoD_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>ping</specs:value>
+									<specs:note>The check of different active web servers is done by pinging them at defined 
+									time intervals and by checking the response header</specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_LoD_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>The check is done every hour</specs:note>
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<!-- measurement related to M2 -->
+						<specs:Metric name="Number of web server types" referenceId="diversity_level_wp_msr2">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Number of web server types active.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Number of Server Types Check Strategy" referenceId="AMR_NoST_CheckStrategy">
+									<specs:definition>This rule defines how to check the number of different servers active: 
+									the check may be done according to different strategies</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Number of Server Types Observation Interval" referenceId="AMP_NoST_ObservationInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent observations</specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_NoST_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>ping</specs:value>
+									<specs:note>The check of different active web servers is done by pinging them at defined time intervals 
+									and by checking the response header</specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_NoST_ObservationInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>The check is done every hour</specs:note>
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+
+
+						<!-- security metrics for SVA -->
+		
+						<!-- M13 -->
+						<specs:Metric name="Scanning Frequency - Basic scan" referenceId="basic_scan_frequency_m13">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>The frequency of vulnerability scanning(e.g., a value of "24h" requires that scanning 
+								is done once per day).</specs:expression>
+								<specs:definition>This metric sets the frequency of the basic software vulnerability scanning.
+									For example, for scanning_frequency=24, SPECS ensures that software vulnerability scanning will be 
+									performed at least once every day.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanning Frequency Check Strategy" referenceId="AMR_ScanFreq_CheckStrategy">
+									<specs:definition>This rule defines how to check that the desired frequency of scanning is respected</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Scanning Frequency Check Interval" referenceId="AMP_ScanFreq_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_ScanFreq_CheckStrategy</specs:ruleDefinitionId>		
+									<specs:value>check report timestamp</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_ScanFreq_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<!-- measurements for M13 -->
+						<specs:Metric name="Age of scanning report - Basic scan" referenceId="report_basic_age_sva_msr1">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Age of the scanning report (basic scan)</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanning Report Age Basic Check Strategy" referenceId="AMR_ScanAge_CheckStrategy">
+									<specs:definition>This rule defines how to check that the scanning report is not too old</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Scanning Report Age Basic Check Interval" referenceId="AMP_ScanAge_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_ScanAge_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check report timestamp</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_ScanAge_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>the maximum value for this measurement should be set to the value of metric "basic_scan_frequency_m13"</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+						<specs:Metric name="Vulnerability list availability" referenceId="list_availability_sva_msr7">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>list available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>list not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the vulnerability list.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Vulnerability List Availability Check Strategy" referenceId="AMR_VulnList_CheckStrategy">
+									<specs:definition>This rule defines how to check the availability of a vulnerability list</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Vulnerability List Availability Check Interval" referenceId="AMP_VulnList_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_VulnList_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check file existence on repository</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_VulnList_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+						<specs:Metric name="Scanners availability" referenceId="scanner_availability_sva_msr8">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>scanners available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>scanners not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the installed scanners</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanners Availability Check Strategy" referenceId="AMR_Scanner_CheckStrategy">
+									<specs:definition>This rule defines how to check the availability of an installed scanner </specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Scanners Availability Check Interval" referenceId="AMP_Scanner_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_Scanner_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>ping</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_Scanner_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+						
+						<!-- M14 -->
+						<specs:Metric name="List Update Frequency" referenceId="list_update_frequency_m14">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>The frequency of vulnerability list updates (e.g., a value of "24h" requires that update is done once per day).</specs:expression>
+								<specs:definition>This metric sets the frequency of updates of the list of known/disclosed vulnerabilities from OVAL/NVD databases. For example,
+									for list_update_frequency=12, SPECS ensures that the list of known/disclosed vulnerabilities will be updated at least once every 12 hours.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="List Update Frequency Check Strategy" referenceId="AMR_ListUpd_CheckStrategy">
+									<specs:definition>This rule defines how to check that the set frequency of list update is respected</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="List Update Frequency Check Interval" referenceId="AMP_ListUpd_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_ListUpd_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check list timestamp</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_ListUpd_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+						<!-- measurements for M14 -->
+						<specs:Metric name="Age of vulnerability list" referenceId="list_age_sva_msr2">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Age of the vulnerability list</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Vulnerability List Age Basic Check Strategy" referenceId="AMR_VulnAge_CheckStrategy">
+									<specs:definition>This rule defines how to check that the vulnerability list is not too old</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Vulnerability List Age Basic Check Interval" referenceId="AMP_VulnAge_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_VulnAge_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check timestamp of last vulnerability list</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_VulnAge_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>the maximum value for this measurement should be set to the value of metric "list_update_frequency_m14"</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<specs:Metric name="Vulnerability repository availability" referenceId="repository_availability_sva_msr6">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>repository available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>repository not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the vulnerability repository.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Vulnerability Repository Availability Check Strategy" referenceId="AMR_VulnRepo_CheckStrategy">
+									<specs:definition>This rule defines how to check the availability of the vulnerability repository</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Vulnerability Repository Availability Check Interval" referenceId="AMP_VulnRepo_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_VulnRepo_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check existence of repository</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_VulnRepo_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+											
+						<!-- M22 -->
+						<specs:Metric name="Scanning Frequency - Extended Scan" referenceId="extended_scan_frequency_m22">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>The frequency of vulnerability scanning (e.g., a value of "24h" requires that scanning is done once per day).</specs:expression>
+								<specs:definition>This metric sets the frequency of the extended software vulnerability scanning. For example, for scanning_frequency=48, SPECS ensures
+									that software vulnerability scanning will be performed at least once every two days. Scanning is performed with two scanners and both scanning
+									reports are joint</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanning Frequency Extended Check Strategy" referenceId="AMR_ScanFreqExt_CheckStrategy">
+									<specs:definition>This rule defines how to check that the set frequency of extended software vulnerability scanning is respected</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Scanning Frequency Extended Check Interval" referenceId="AMP_ScanFreqExt_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_ScanFreqExt_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check report timestamp</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_ScanFreqExt_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+						<specs:Metric name="Age of scanning report - Extended Scan" referenceId="report_extended_age_sva_msr3">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Age of the scanning report (extended scan)</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanning Report Age Extended Check Strategy" referenceId="AMR_ScanAgeExt_CheckStrategy">
+									<specs:definition>This rule defines how to check that the extended scanning report is not too old</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Scanning Report Age Extended Check Interval" referenceId="AMP_ScanAgeExt_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_ScanAgeExt_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check report timestamp</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_ScanAgeExt_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>the maximum value for this measurement should be set to the value of metric "extended_scan_frequency_m22"</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						
+						<!-- M23 -->
+						<specs:Metric name="Up Report Frequency" referenceId="up_report_frequency_m23">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>The frequency of checks for updates of the vulnerable installed libraries</specs:expression>
+								<specs:definition>This metric sets the frequency of checks for updates and upgrades of vulnerable installed libraries.
+									At the implementation time, SPECS generates vulnerability list, performs the vulnerability scan of the system, and generates
+									scanning report.  Then periodically checks for available updates and upgrades of libraries on which vulnerabilities have
+									been detected. For example, for up_report_frequency=24, SPECS ensures that checks for updates and upgrades are performed at
+									least once every day.</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Up Report Frequency Check Strategy" referenceId="AMR_UpRepFreq_CheckStrategy">
+									<specs:definition>This rule defines how to check that the checks for updates are performed with the desired frequency</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Up Report Frequency Check Interval" referenceId="AMP_UpRepFreq_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_UpRepFreq_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check timestamp of last check for updates</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_UpRepFreq_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+
+						<!-- measurements for M23 -->
+						<specs:Metric name="Age of the update/upgrade report" referenceId="up_report_age_sva_msr4">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Age of the update/upgrade report</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Update Report Age Basic Check Strategy" referenceId="AMR_UpdReportAge_CheckStrategy">
+									<specs:definition>This rule defines how to check that the update/upgrade report is not too old</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Update Report Age Basic Check Interval" referenceId="AMP_UpdReportAge_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_UpdReportAge_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check timestamp of last update report</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_UpdReportAge_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>the maximum value for this measurement should be set to the value of metric "up_report_frequency_m23"</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<specs:Metric name="Availability of the scanning report" referenceId="scan_report_availability_sva_msr9">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>report available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>report not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the scanning report</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanning Report Availability Check Strategy" referenceId="AMR_ScanningReport_CheckStrategy">
+									<specs:definition>This rule defines how to check the availability of the scanning report</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Update Report Availability Check Interval" referenceId="AMP_ScanningReport_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_ScanningReport_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check report existence</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_ScanningReport_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+												
+						<specs:Metric name="Availability of the update/upgrade report" referenceId="up_report_availability_sva_msr10">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>report available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>report not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the update/upgrade report</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Update Report Availability Check Strategy" referenceId="AMR_UpdReport_CheckStrategy">
+									<specs:definition>This rule defines how to check the availability of the Update/Upgrade report</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Update Report Availability Check Interval" referenceId="AMP_UpdReport_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_UpdReport_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check report existence</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_UpdReport_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<!-- M24 -->
+						<specs:Metric name="Penetration Testing Activated" referenceId="pen_testing_activated_m24">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>penetration testing must be activated</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>penetration testing must not be activated</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Activation of penetration testing</specs:expression>
+								<specs:definition>This metric activates the penetration testing activity. </specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							
+						</specs:Metric>
+						
+						<!-- measurements for M24 -->
+						<specs:Metric name="Activation of the penetration testing functionality" referenceId="pen_testing_activated_sva_msr5">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>penetration testing is activated</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>penetration testing is not activated</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Activation of penetration testing functionality</specs:expression>
+								<specs:definition>This measurements defines whether the penetration testing functionality is properly configured and active</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							
+						</specs:Metric>
+
+						
+						<!-- security metrics for OSSEC -->
+		
+						<!-- M16 -->
+						<specs:Metric name="DDoS Attack Detection Scan Frequency" referenceId="dDoS_scan_frequency_m16">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>Frequency of the scan for dDoS attacks.
+								</specs:expression>
+								<specs:definition>The frequency of the dDoS attack report generation (for example, "2h" requires that the dDoS attack report is generated every two hours).
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="dDoS Detection Frequency Check Strategy" referenceId="AMR_DDoSFreq_CheckStrategy">
+									<specs:definition>This rule defines how to check that the desired frequency of detection is respected</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="dDoS Detection Frequency Check Interval" referenceId="AMP_DDoSFreq_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_DDoSFreq_CheckStrategy</specs:ruleDefinitionId>		
+									<specs:value>check report timestamp</specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_DDoSFreq_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<!-- measurements for M16 -->
+						<specs:Metric name="Age of dDoS report" referenceId="dDos_report_age_msr1">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>1</specs:intervalItemStart>
+										<specs:intervalItemStop></specs:intervalItemStop>
+										<specs:intervalItemStep></specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Age of the dDoS attack scanning report</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+							<!-- if applicable, set Rule and Parameter definitions -->
+							<specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="Scanning dDoS Report Age Basic Check Strategy" referenceId="AMR_dDoSAge_CheckStrategy">
+									<specs:definition>This rule defines how to check that the dDoS attack scanning report is not too old</specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="Scanning dDoS Report Age Basic Check Interval" referenceId="AMP_dDoSAge_CheckInterval">
+									<specs:definition>This parameter refers to the time, expressed in hours, between two subsequent checks </specs:definition>
+									<specs:parameterType>integer</specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId>AMR_dDoSAge_CheckStrategy</specs:ruleDefinitionId>
+									<specs:value>check report timestamp</specs:value>
+									<specs:note></specs:note>
+									
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId>AMP_dDoSAge_CheckInterval</specs:parameterDefinitionId>
+									<specs:value>1</specs:value>
+									<specs:note>the maximum value for this measurement should be set to the value of metric "dDoS_scan_frequency_m16"</specs:note>
+									
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note>
+						</specs:Metric>
+						
+						<!-- security metrics for TLS -->
+		
+						<!-- M3 -->
+						<specs:Metric name="TLS cryptographic strength" referenceId="tls_crypto_strenght_m3">
+							<specs:MetricDefinition>
+								<specs:unit name="hours">
+									<specs:intervalUnit>
+										<specs:intervalItemsType>integer</specs:intervalItemsType>
+										<specs:intervalItemStart>0</specs:intervalItemStart>
+										<specs:intervalItemStop>8</specs:intervalItemStop>
+										<specs:intervalItemStep>1</specs:intervalItemStep>
+									</specs:intervalUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Quantitative>Ratio</specs:Quantitative>
+								</specs:scale>
+								<specs:expression>Cryptographic strength 
+								</specs:expression>
+								<specs:definition>This metric sets the cryptographic strength to be used by the TLS Terminator. TLS Terminator Configurator will choose the appropriate cryptographic ciphers that meet the negotiated level, and configure TLS Terminator accordingly.
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						<!-- M4 -->
+						<specs:Metric name="Forward secrecy" referenceId="forward_secrecy_m4">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>forward secrecy is activated</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>forward secrecy is not activated</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Forward secrecy
+								</specs:expression>
+								<specs:definition>This metric ensures that the encrypted data sent through a session of the TLS secure channel cannot be decrypted even if the cryptographic data, used to generate the cryptographic credentials for that session, are compromised.
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						
+						<!-- M5 -->
+						<specs:Metric name="HTTP strict transport security (HSTS)" referenceId="hsts_m5">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>hsts is activated</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>hsts is not activated</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>HTTP strict transport security 
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP transport layer that declares the web content available only over a secure HTTP connection.
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						
+						<!-- M6 -->
+						<specs:Metric name="HTTP to HTTPS redirects" referenceId="https_redirect_m6">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>HTTPS redirect is forced</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>HTTPS redirect is not forced</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>HTTP to HTTPs redirect 
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP delivery service that forces clients to use only secure HTTP protocol.
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						
+						<!-- M7 -->
+						<specs:Metric name="Secure Cookies" referenceId="secure_cookies_m7">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>Secure cookies forced</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>Secure cookies not forced</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Secure cookies
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP protocol to force the clients to download session cookies, delivered by the HTTP services, only through a secured HTTP communication
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						
+						<!-- M10 -->
+						<specs:Metric name="Certificate pinning" referenceId="certificate_pinning_m10">
+							<specs:MetricDefinition>
+								<specs:unit name="">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>Certificate pinning forced</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>Certificate pinning not forced</specs:description>
+											</specs:enumItem>
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression>Certificate pinning
+								</specs:expression>
+								<specs:definition>This metric is a feature of HTTP protocol allowing the verification of the SSL certificates between the client and the HTTP service where the hash of the public certificate is pinned into the HTTP response.
+								</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+		
+							<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						<!-- measurements related to TLS -->
+						<specs:Metric name="Availability of the TLS Terminator" referenceId="tls_terminator_availability_tls_msr1">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>TLS Terminator available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>TLS Terminator not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the TLS Terminator component</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+						<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+						<specs:Metric name="Availability of the TLS Endpoint" referenceId="tls_endpoint_availability_tls_msr2">
+							<specs:MetricDefinition>
+								<specs:unit name="n/a">
+									<specs:enumUnit>
+										<specs:enumItemsType>string</specs:enumItemsType>
+										<specs:enumItems>
+											<specs:enumItem>
+												<specs:value>yes</specs:value>
+												<specs:description>TLS Endpoint available</specs:description>
+											</specs:enumItem>
+											<specs:enumItem>
+												<specs:value>no</specs:value>
+												<specs:description>TLS Endpoint not available</specs:description>
+											</specs:enumItem>	
+										</specs:enumItems>
+									</specs:enumUnit>
+								</specs:unit>
+								<specs:scale>
+									<specs:Qualitative>Nominal</specs:Qualitative>
+								</specs:scale>
+								<specs:expression></specs:expression>
+								<specs:definition>Availability of the TLS Endpoint component</specs:definition>
+								<specs:note></specs:note>
+							</specs:MetricDefinition>
+						<!-- <specs:AbstractMetricRuleDefinition>
+								<specs:RuleDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:note></specs:note>
+								</specs:RuleDefinition>
+							</specs:AbstractMetricRuleDefinition>
+							<specs:AbstractMetricParameterDefinition>
+								<specs:ParameterDefinition name="" referenceId="">
+									<specs:definition></specs:definition>
+									<specs:parameterType></specs:parameterType>
+									<specs:note></specs:note>
+									
+								</specs:ParameterDefinition>
+							</specs:AbstractMetricParameterDefinition>
+
+							<specs:MetricRules>
+								<specs:MetricRule>
+									<specs:ruleDefinitionId></specs:ruleDefinitionId>		
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+								</specs:MetricRule>
+							</specs:MetricRules>
+							<specs:MetricParameters>
+								<specs:MetricParameter>
+									<specs:parameterDefinitionId></specs:parameterDefinitionId>
+									<specs:value></specs:value>
+									<specs:note></specs:note>
+		
+								</specs:MetricParameter>
+							</specs:MetricParameters>
+							<specs:note></specs:note> -->
+						</specs:Metric>
+						
+					</specs:security_metrics>
+				</specs:serviceDescription>
+			</wsag:ServiceDescriptionTerm>
+
+
+			<wsag:ServiceReference wsag:Name="SecureWebServer_endpoint" wsag:ServiceName="SecureWebServer">
+				<specs:endpoint>http://specs/application-endpoint</specs:endpoint>
+			</wsag:ServiceReference>
+
+
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='WEBPOOL']" wsag:ServiceName="SecureWebServer">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="specs_webpool_M1" wsag:Metric="level_of_redundancy_m1">
+						<wsag:Location>//specs:NISTsecurityControl[@id='WEBPOOL_NIST_CP_2'] | //specs:NISTsecurityControl[@id='WEBPOOL_NIST_SC_5'] | //specs:NISTsecurityControl[@id='WEBPOOL_NIST_SC_36']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_webpool_M2" wsag:Metric="level_of_diversity_m2">
+						<wsag:Location>//specs:NISTsecurityControl[@id='WEBPOOL_NIST_CP_2'] | //specs:NISTsecurityControl[@id='WEBPOOL_NIST_SC_5'] | //specs:NISTsecurityControl[@id='WEBPOOL_NIST_SC_29']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='SVA']" wsag:ServiceName="SecureWebServer">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="specs_SVA_M13" wsag:Metric="basic_scan_frequency_m13">
+						<wsag:Location>//specs:NISTsecurityControl[@id='SVA_NIST_CA_7'] | //specs:NISTsecurityControl[@id='SVA_NIST_RA_5']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_SVA_M14" wsag:Metric="list_update_frequency_m14">
+						<wsag:Location>//specs:NISTsecurityControl[@id='SVA_NIST_CA_7_3'] | //specs:NISTsecurityControl[@id='SVA_NIST_RA_5_1'] </wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_SVA_M22" wsag:Metric="extended_scan_frequency_m22">
+						<wsag:Location>//specs:NISTsecurityControl[@id='SVA_NIST_CA_7'] | //specs:NISTsecurityControl[@id='SVA_NIST_RA_5']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_SVA_M23" wsag:Metric="up_report_frequency_m23">
+						<wsag:Location>//specs:NISTsecurityControl[@id='SVA_NIST_CA_7'] | //specs:NISTsecurityControl[@id='SVA_NIST_RA_5']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_SVA_M24" wsag:Metric="pen_testing_activated_m24">
+						<wsag:Location>//specs:NISTsecurityControl[@id='SVA_NIST_CA_8']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+			
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='OSSEC']" wsag:ServiceName="SecureWebServer">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="specs_OSSEC_M16" wsag:Metric="dDoS_scan_frequency_m16">
+						<wsag:Location>//specs:NISTsecurityControl[@id='OSSEC_NIST_SC_5'] | //specs:NISTsecurityControl[@id='OSSEC_NIST_SC_5_3'] 
+						| //specs:NISTsecurityControl[@id='OSSEC_NIST_CA_7'] | //specs:NISTsecurityControl[@id='OSSEC_NIST_SI_4']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+			
+						
+						
+			<wsag:ServiceProperties wsag:Name="//specs:capability[@id='TLS']" wsag:ServiceName="SecureWebServer">
+				<wsag:VariableSet>
+					<wsag:Variable wsag:Name="specs_TLS_M3" wsag:Metric="tls_crypto_strenght_m3">
+						<wsag:Location>//specs:NISTsecurityControl[@id='TLS_NIST_SC_13']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M4" wsag:Metric="forward_secrecy_m4">
+						<wsag:Location>//specs:NISTsecurityControl[@id='TLS_NIST_SC_12']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M5" wsag:Metric="hsts_m5">
+						<wsag:Location>//specs:NISTsecurityControl[@id='TLS_NIST_SC_43']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M6" wsag:Metric="https_redirect_m6">
+						<wsag:Location>//specs:NISTsecurityControl[@id='TLS_NIST_SC_8']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M7" wsag:Metric="secure_cookies_m7">
+						<wsag:Location>//specs:NISTsecurityControl[@id='TLS_NIST_SC_29']</wsag:Location>
+					</wsag:Variable>
+					<wsag:Variable wsag:Name="specs_TLS_M10" wsag:Metric="ceritificate_pinning_m10">
+						<wsag:Location>//specs:NISTsecurityControl[@id='TLS_NIST_SC_17']</wsag:Location>
+					</wsag:Variable>
+				</wsag:VariableSet>
+			</wsag:ServiceProperties>
+
+
+			<!-- WebPool related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='WEBPOOL']" wsag:Obligated="ServiceProvider">
+
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="webpool_slo1">
+						<specs:MetricREF>specs_webpool_M1</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>geq</specs:operator>
+								<specs:operand>3</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					<specs:SLO SLO_ID="webpool_slo2">
+						<specs:MetricREF>specs_webpool_M2</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>geq</specs:operator>
+								<specs:operand>2</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					
+					
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+
+			<!-- SVA related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='SVA']" wsag:Obligated="ServiceProvider">
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="sva_slo1">
+						<specs:MetricREF>specs_SVA_M13</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>eq</specs:operator>
+								<specs:operand>24</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					<specs:SLO SLO_ID="sva_slo2">
+						<specs:MetricREF>specs_SVA_M14</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>eq</specs:operator>
+								<specs:operand>72</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					<specs:SLO SLO_ID="sva_slo3">
+						<specs:MetricREF>specs_SVA_M22</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>eq</specs:operator>
+								<specs:operand>24</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					<specs:SLO SLO_ID="sva_slo4">
+						<specs:MetricREF>specs_SVA_M23</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>eq</specs:operator>
+								<specs:operand>24</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					<specs:SLO SLO_ID="sva_slo5">
+						<specs:MetricREF>specs_SVA_M24</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>eq</specs:operator>
+								<specs:operand>yes</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+					</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+			
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+
+			<!-- OSSEC related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='OSSEC']" wsag:Obligated="ServiceProvider">
+
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="ossec_slo1">
+						<specs:MetricREF>specs_ossec_M16</specs:MetricREF>
+						<specs:SLOexpression>
+							<specs:oneOpExpression>
+								<specs:operator>eq</specs:operator>
+								<specs:operand>2</specs:operand>
+							</specs:oneOpExpression>
+						</specs:SLOexpression>	
+						<specs:importance_weight>MEDIUM</specs:importance_weight>
+					</specs:SLO>
+								
+					
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+			
+			<!-- TLS related SLOs -->
+			<wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='TLS']" wsag:Obligated="ServiceProvider">
+
+				<wsag:ServiceLevelObjective>
+					<wsag:CustomServiceLevel>
+						<specs:objectiveList>
+							<specs:SLO SLO_ID="tls_slo1">
+								<specs:MetricREF>specs_tls_M3</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>7</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo2">
+								<specs:MetricREF>specs_tls_M4</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo3">
+								<specs:MetricREF>specs_tls_M5</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo4">
+								<specs:MetricREF>specs_tls_M6</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo5">
+								<specs:MetricREF>specs_tls_M7</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+							<specs:SLO SLO_ID="tls_slo6">
+								<specs:MetricREF>specs_tls_M10</specs:MetricREF>
+								<specs:SLOexpression>
+									<specs:oneOpExpression>
+										<specs:operator>eq</specs:operator>
+										<specs:operand>no</specs:operand>
+									</specs:oneOpExpression>
+								</specs:SLOexpression>	
+								<specs:importance_weight>MEDIUM</specs:importance_weight>
+							</specs:SLO>
+								
+					
+						</specs:objectiveList>
+					</wsag:CustomServiceLevel>
+				</wsag:ServiceLevelObjective>
+				<wsag:BusinessValueList></wsag:BusinessValueList>
+			</wsag:GuaranteeTerm>
+			
+
+		</wsag:All>
+	</wsag:Terms>
+</wsag:AgreementOffer>
