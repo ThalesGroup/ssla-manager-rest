@@ -11,7 +11,7 @@ from sslamanagerrest.route import ssla_router, health_router
 VERSION = 'v1'
 DESCRIPTION = {
     "version": VERSION,
-    "chart_name": "security policy manager rest api"
+    "chart_name": "ssla manager rest api"
 }
 API_ROUTER_PREFIX = f"/api/{VERSION}"
 SSLA_ROUTER_PREFIX = "/ssla"

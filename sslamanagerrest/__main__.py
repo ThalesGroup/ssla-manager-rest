@@ -17,7 +17,7 @@ LOGGING_FORMAT = "%(asctime)s - (%(filename)s:%(lineno)d) - %(levelname)s - %(me
 
 app = FastAPI()
 app.include_router(api.router)
-app.title = "Security Policy Manager API"
+app.title = "SSLA Manager API"
 app.description = "REST API for the ecurity Policy Manager"
 
 logger: logging.Logger
@@ -57,7 +57,7 @@ def init_environment(args):
     # init database and check for proper instantiation
     spm = get_spm()
     if spm is None:
-        logger.error("cannot create the security policy manager")
+        logger.error("cannot create the SSLA manager")
         sys.exit(1)
 
 

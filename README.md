@@ -1,6 +1,6 @@
-# security-policy-manager-rest-api
+# SSLA Manager REST API
 
-Implements a REST API for the SSLA manager module and to manage SSLAs remotely.
+Implements a REST API for the [SSLA manager module](https://github.com/ThalesGroup/ssla-manager) and to manage SSLAs remotely.
 
 ## Quick start
 
@@ -38,7 +38,7 @@ sslamanagerrest --dump-openapi -c /dev/null
 
 ### Dependencies
 
-You need the Security Policy Manager as a dependency for this project :
+You need the SSLA Manager as a dependency for this project :
 
 ```sh
 SSLA_MANAGER_VERSION="v0.1.0"
