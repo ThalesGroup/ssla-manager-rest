@@ -16,7 +16,7 @@ Run :
 touch /tmp/ssla.db
 podman run -d \
   --name sslamanagerrest \
-  -p 8080:80 \
+  -p 8081:80 \
   -v /tmp/ssla.db:/data/ssla.db \
   localhost/thales-sslamanager-rest
 ```

@@ -1,1 +1,446 @@
-{"openapi": "3.1.0", "info": {"title": "Security Policy Manager API", "description": "REST API for the ecurity Policy Manager", "version": "0.1.0"}, "paths": {"/api/v1/ssla": {"post": {"tags": ["ssla"], "summary": "Submit new SSLA", "description": "Take the SSLA in XML format as input and install the proper enablers\n:param ssla: The SSLA XML file to provide as a form-data.\n:return:", "operationId": "create_ssla_api_v1_ssla_post", "requestBody": {"required": true, "content": {"multipart/form-data": {"schema": {"$ref": "#/components/schemas/Body_create_ssla_api_v1_ssla_post"}}}}, "responses": {"201": {"description": "SSLA properly submitted", "content": {"application/json": {"schema": {}}}}, "422": {"description": "The SSLA has the wrong format"}}}, "put": {"tags": ["ssla"], "summary": "Update an existing SSLA", "description": "Take the SSLA in XML format as input and install the proper enablers\n:param ssla: The SSLA XML file to provide as a form-data.\n:return:", "operationId": "update_ssla_api_v1_ssla_put", "requestBody": {"required": true, "content": {"multipart/form-data": {"schema": {"$ref": "#/components/schemas/Body_update_ssla_api_v1_ssla_put"}}}}, "responses": {"200": {"description": "SSLA successfully updated", "content": {"application/json": {"schema": {}}}}, "422": {"description": "The SSLA has the wrong format"}}}, "get": {"tags": ["ssla"], "summary": "GET service related list of SSLAs", "operationId": "get_ssla_api_v1_ssla_get", "parameters": [{"name": "service", "in": "query", "required": true, "schema": {"type": "string", "title": "Service"}}], "responses": {"200": {"description": "List of SSLA successfully retrieved", "content": {"application/json": {"schema": {}}}}, "404": {"description": "No SSLA found for this service"}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/api/v1/ssla/": {"delete": {"tags": ["ssla"], "summary": "DELETE an SSLA based on its service name", "operationId": "delete_ssla_api_v1_ssla__delete", "parameters": [{"name": "service", "in": "query", "required": true, "schema": {"type": "string", "title": "Service"}}], "responses": {"200": {"description": "SSLA deleted", "content": {"application/json": {"schema": {}}}}, "404": {"description": "No SSLA found with the provided service name"}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/api/v1/ssla/services": {"get": {"tags": ["ssla"], "summary": "GET services list related to submitted SSLAs", "operationId": "get_services_api_v1_ssla_services_get", "responses": {"200": {"description": "List of services successfully retrieved from submitted SSLAs", "content": {"application/json": {"schema": {}}}}, "404": {"description": "No services found"}}}}, "/api/v1/ssla/slo": {"get": {"tags": ["ssla"], "summary": "GET services level objectives of a submitted SSLA", "operationId": "get_slos_api_v1_ssla_slo_get", "parameters": [{"name": "service", "in": "query", "required": true, "schema": {"type": "string", "title": "Service"}}], "responses": {"200": {"description": "List of SLOs successfully retrieved from submitted SSLAs", "content": {"application/json": {"schema": {}}}}, "404": {"description": "No SLOs found"}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/api/v1/ssla/metrics": {"get": {"tags": ["ssla"], "summary": "GET metrics from a submitted SSLA", "operationId": "get_metrics_api_v1_ssla_metrics_get", "parameters": [{"name": "service", "in": "query", "required": true, "schema": {"type": "string", "title": "Service"}}, {"name": "metric", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Metric"}}], "responses": {"200": {"description": "List of metrics successfully retrieved from a submitted SSLA", "content": {"application/json": {"schema": {}}}}, "404": {"description": "No metrics found"}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/api/v1/ssla/properties": {"get": {"tags": ["ssla"], "summary": "GET service properties from a submitted SSLA", "operationId": "get_properties_api_v1_ssla_properties_get", "parameters": [{"name": "service", "in": "query", "required": true, "schema": {"type": "string", "title": "Service"}}], "responses": {"200": {"description": "List of service properties successfully retrieved from a submitted SSLA", "content": {"application/json": {"schema": {}}}}, "404": {"description": "No service properties found"}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/api/v1/health": {"get": {"tags": ["health"], "summary": "service health check", "description": "Take the SSLA in XML format as input and install the proper enablers", "operationId": "health_api_v1_health_get", "responses": {"200": {"description": "service is healthy", "content": {"application/json": {"schema": {}}}}}}}, "/api/v1/": {"get": {"summary": "Root", "description": "Return the rest api description in response\n:return: JSON description of the sslaorchestrator rest api", "operationId": "root_api_v1__get", "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}}}}}, "components": {"schemas": {"Body_create_ssla_api_v1_ssla_post": {"properties": {"ssla": {"type": "string", "format": "binary", "title": "Ssla"}}, "type": "object", "required": ["ssla"], "title": "Body_create_ssla_api_v1_ssla_post"}, "Body_update_ssla_api_v1_ssla_put": {"properties": {"ssla": {"type": "string", "format": "binary", "title": "Ssla"}}, "type": "object", "required": ["ssla"], "title": "Body_update_ssla_api_v1_ssla_put"}, "HTTPValidationError": {"properties": {"detail": {"items": {"$ref": "#/components/schemas/ValidationError"}, "type": "array", "title": "Detail"}}, "type": "object", "title": "HTTPValidationError"}, "ValidationError": {"properties": {"loc": {"items": {"anyOf": [{"type": "string"}, {"type": "integer"}]}, "type": "array", "title": "Location"}, "msg": {"type": "string", "title": "Message"}, "type": {"type": "string", "title": "Error Type"}}, "type": "object", "required": ["loc", "msg", "type"], "title": "ValidationError"}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Security Policy Manager API",
+    "description": "REST API for the ecurity Policy Manager",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/ssla": {
+      "post": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "Submit new SSLA",
+        "description": "Take the SSLA in XML format as input and install the proper enablers\n:param ssla: The SSLA XML file to provide as a form-data.\n:return:",
+        "operationId": "create_ssla_api_v1_ssla_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_ssla_api_v1_ssla_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "SSLA properly submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "status": "created",
+                    "services": ["service1", "service2"]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The SSLA has the wrong format"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "Update an existing SSLA",
+        "description": "Take the SSLA in XML format as input and install the proper enablers\n:param ssla: The SSLA XML file to provide as a form-data.\n:return:",
+        "operationId": "update_ssla_api_v1_ssla_put",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_ssla_api_v1_ssla_put"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SSLA successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "The SSLA has the wrong format"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "GET service related list of SSLAs",
+        "operationId": "get_ssla_api_v1_ssla_get",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Service"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of SSLA successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No SSLA found for this service"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ssla/": {
+      "delete": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "DELETE an SSLA based on its service name",
+        "operationId": "delete_ssla_api_v1_ssla__delete",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Service"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSLA deleted",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No SSLA found with the provided service name"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ssla/services": {
+      "get": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "GET services list related to submitted SSLAs",
+        "operationId": "get_services_api_v1_ssla_services_get",
+        "responses": {
+          "200": {
+            "description": "List of services successfully retrieved from submitted SSLAs",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No services found"
+          }
+        }
+      }
+    },
+    "/api/v1/ssla/slo": {
+      "get": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "GET services level objectives of a submitted SSLA",
+        "operationId": "get_slos_api_v1_ssla_slo_get",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Service"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of SLOs successfully retrieved from submitted SSLAs",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No SLOs found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ssla/metrics": {
+      "get": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "GET metrics from a submitted SSLA",
+        "operationId": "get_metrics_api_v1_ssla_metrics_get",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Service"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of metrics successfully retrieved from a submitted SSLA",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No metrics found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ssla/properties": {
+      "get": {
+        "tags": [
+          "ssla"
+        ],
+        "summary": "GET service properties from a submitted SSLA",
+        "operationId": "get_properties_api_v1_ssla_properties_get",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Service"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of service properties successfully retrieved from a submitted SSLA",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No service properties found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "service health check",
+        "description": "Take the SSLA in XML format as input and install the proper enablers",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/": {
+      "get": {
+        "summary": "Root",
+        "description": "Return the rest api description in response\n:return: JSON description of the sslaorchestrator rest api",
+        "operationId": "root_api_v1__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_create_ssla_api_v1_ssla_post": {
+        "properties": {
+          "ssla": {
+            "type": "string",
+            "format": "binary",
+            "title": "Ssla"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ssla"
+        ],
+        "title": "Body_create_ssla_api_v1_ssla_post"
+      },
+      "Body_update_ssla_api_v1_ssla_put": {
+        "properties": {
+          "ssla": {
+            "type": "string",
+            "format": "binary",
+            "title": "Ssla"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ssla"
+        ],
+        "title": "Body_update_ssla_api_v1_ssla_put"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

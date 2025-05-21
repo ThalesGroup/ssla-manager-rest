@@ -8,18 +8,18 @@ from lxml.etree import XMLSyntaxError
 from sslamanager.parser.ssla_parser import SLO, Metric, ServiceProperties
 
 from sslamanagerrest.environment import get_spm
-from sslamanagerrest.route.response import ResponseError
+from sslamanagerrest.route.response import ResponseError, CreateResponseData
 
 router = APIRouter()
 
 logger = logging.getLogger("uvicorn.default")
 
-
 @router.post("",
              summary="Submit new SSLA",
              response_description="SSLA submission response",
              responses={
-                 201: {"description": "SSLA properly submitted"},
+                 200: {"description": "SSLA already exists"},
+                 201: {"description": "SSLA properly submitted", "model": CreateResponseData},
                  422: {"description": "The SSLA has the wrong format"}
              },
              status_code=status.HTTP_201_CREATED)
@@ -32,7 +32,8 @@ async def create_ssla(ssla: "UploadFile" = File(...)):
     logger.debug("POST /ssla")
     ssla_content = await ssla.read()
     try:
-        get_spm().create_ssla(ssla_content)
+        ssla = get_spm().create_ssla(ssla_content)
+        services_names = ssla.get_services_names()
 
     except XMLSyntaxError as e:
         return ResponseError(message="unprocessable SSLA content", exception=e,
@@ -47,7 +48,8 @@ async def create_ssla(ssla: "UploadFile" = File(...)):
         else:
             raise e
 
-    return JSONResponse(content="created", status_code=status.HTTP_201_CREATED)
+    data = CreateResponseData(status="created", services=services_names)
+    return JSONResponse(content=data.model_dump(), status_code=status.HTTP_201_CREATED)
 
 
 @router.put("",

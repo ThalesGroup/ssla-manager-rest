@@ -1,6 +1,7 @@
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 from fastapi import HTTPException
+from pydantic import BaseModel
 
 
 class ResponseError(HTTPException):
@@ -22,3 +23,7 @@ class ResponseError(HTTPException):
 
         detail = {"message": message, "reason": exception.args}
         super().__init__(status_code=status, detail=detail, headers=headers)
+
+class CreateResponseData(BaseModel):
+    status: str
+    services: List[str]
