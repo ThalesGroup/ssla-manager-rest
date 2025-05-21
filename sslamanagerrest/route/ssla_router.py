@@ -1,4 +1,5 @@
 import logging
+from http.client import HTTPException
 from typing import List, Optional
 
 from fastapi import APIRouter, File, UploadFile, status
@@ -87,7 +88,14 @@ async def update_ssla(ssla: "UploadFile" = File(...)):
             })
 async def get_ssla(service: str):
     logger.debug(f"GET /ssla/{service}")
-    ssla = str(get_spm().get_ssla_content(service))
+    try:
+        ssla = str(get_spm().get_ssla_content(service))
+    except Exception as e:
+        if "not found" in str(e):
+            return ResponseError(message="Service not found", exception=e, status=status.HTTP_404_NOT_FOUND)
+        else:
+            raise HTTPException(e)
+
     return JSONResponse(content=ssla)
 
 
