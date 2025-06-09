@@ -1,0 +1,341 @@
+components:
+  schemas:
+    Body_create_ssla_api_v1_ssla_post:
+      properties:
+        ssla:
+          format: binary
+          title: Ssla
+          type: string
+      required:
+      - ssla
+      title: Body_create_ssla_api_v1_ssla_post
+      type: object
+    Body_update_ssla_api_v1_ssla_put:
+      properties:
+        ssla:
+          format: binary
+          title: Ssla
+          type: string
+      required:
+      - ssla
+      title: Body_update_ssla_api_v1_ssla_put
+      type: object
+    CreateResponseData:
+      properties:
+        services:
+          items:
+            type: string
+          title: Services
+          type: array
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      - services
+      title: CreateResponseData
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    SLO:
+      properties:
+        id:
+          title: Id
+          type: string
+        metricREF:
+          title: Metricref
+          type: string
+        operands:
+          items:
+            type: string
+          title: Operands
+          type: array
+        operator:
+          title: Operator
+          type: string
+        priority:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Priority
+      required:
+      - id
+      - metricREF
+      - priority
+      - operator
+      - operands
+      title: SLO
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+info:
+  description: REST API for the ecurity Policy Manager
+  title: SSLA Manager API
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /api/v1/:
+    get:
+      description: 'Return the rest api description in response
+
+        :return: JSON description of the sslaorchestrator rest api'
+      operationId: root_api_v1__get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+      summary: Root
+  /api/v1/health:
+    get:
+      description: Take the SSLA in XML format as input and install the proper enablers
+      operationId: health_api_v1_health_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: service is healthy
+      summary: service health check
+      tags:
+      - health
+  /api/v1/ssla:
+    get:
+      operationId: get_ssla_api_v1_ssla_get
+      parameters:
+      - in: query
+        name: service
+        required: true
+        schema:
+          title: Service
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: List of SSLA successfully retrieved
+        '404':
+          description: No SSLA found for this service
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: GET service related list of SSLAs
+      tags:
+      - ssla
+    post:
+      description: 'Take the SSLA in XML format as input and install the proper enablers
+
+        :param ssla: The SSLA XML file to provide as a form-data.
+
+        :return:'
+      operationId: create_ssla_api_v1_ssla_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_ssla_api_v1_ssla_post'
+        required: true
+      responses:
+        '200':
+          description: SSLA already exists
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponseData'
+          description: SSLA properly submitted
+        '422':
+          description: The SSLA has the wrong format
+      summary: Submit new SSLA
+      tags:
+      - ssla
+    put:
+      description: 'Take the SSLA in XML format as input and install the proper enablers
+
+        :param ssla: The SSLA XML file to provide as a form-data.
+
+        :return:'
+      operationId: update_ssla_api_v1_ssla_put
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_update_ssla_api_v1_ssla_put'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: SSLA successfully updated
+        '422':
+          description: The SSLA has the wrong format
+      summary: Update an existing SSLA
+      tags:
+      - ssla
+  /api/v1/ssla/:
+    delete:
+      operationId: delete_ssla_api_v1_ssla__delete
+      parameters:
+      - in: query
+        name: service
+        required: true
+        schema:
+          title: Service
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: SSLA deleted
+        '404':
+          description: No SSLA found with the provided service name
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: DELETE an SSLA based on its service name
+      tags:
+      - ssla
+  /api/v1/ssla/metrics:
+    get:
+      operationId: get_metrics_api_v1_ssla_metrics_get
+      parameters:
+      - in: query
+        name: service
+        required: true
+        schema:
+          title: Service
+          type: string
+      - in: query
+        name: metric
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: List of metrics successfully retrieved from a submitted SSLA
+        '404':
+          description: No metrics found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: GET metrics from a submitted SSLA
+      tags:
+      - ssla
+  /api/v1/ssla/properties:
+    get:
+      operationId: get_properties_api_v1_ssla_properties_get
+      parameters:
+      - in: query
+        name: service
+        required: true
+        schema:
+          title: Service
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: List of service properties successfully retrieved from a submitted
+            SSLA
+        '404':
+          description: No service properties found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: GET service properties from a submitted SSLA
+      tags:
+      - ssla
+  /api/v1/ssla/services:
+    get:
+      operationId: get_services_api_v1_ssla_services_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: List of services successfully retrieved from submitted SSLAs
+        '404':
+          description: No services found
+      summary: GET services list related to submitted SSLAs
+      tags:
+      - ssla
+  /api/v1/ssla/slo:
+    get:
+      operationId: get_slos_api_v1_ssla_slo_get
+      parameters:
+      - in: query
+        name: service
+        required: true
+        schema:
+          title: Service
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SLO'
+                title: Response 200 Get Slos Api V1 Ssla Slo Get
+                type: array
+          description: List of SLOs successfully retrieved from submitted SSLAs
+        '404':
+          description: No SLOs found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: GET services level objectives of a submitted SSLA
+      tags:
+      - ssla
