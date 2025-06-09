@@ -32,7 +32,8 @@ function init_build(){
 function openapi_generation() {
     echo ". Dump OpenAPI v3 specification"
     cd "${PROJECT_DIR}" || exit
-    poetry run python ./sslamanagerrest/__main__.py --dump-openapi -c /dev/null
+    rm openapi.json openapi.yaml
+    poetry run python -m sslamanagerrest --dump-openapi -c /dev/null
 }
 
 function build(){
@@ -53,8 +54,8 @@ check_requirement poetry --version "! Install poetry first"
 
 init_build
 xsdata_generation
-openapi_generation
 build
+openapi_generation
 
 echo ". OK"
 exit 0

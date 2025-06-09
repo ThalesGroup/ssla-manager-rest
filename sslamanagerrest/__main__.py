@@ -5,6 +5,7 @@ import os
 import sys
 
 import uvicorn
+import yaml
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
@@ -63,9 +64,9 @@ def init_environment(args):
 
 def dump_openapi_spec():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    with open(f'{current_dir}/../openapi.json', 'w') as f:
+    with open(f'{current_dir}/../openapi.yaml', 'w') as f:
 
-        json.dump(get_openapi(
+        yaml.dump(get_openapi(
             title=app.title,
             version=app.version,
             openapi_version=app.openapi_version,
