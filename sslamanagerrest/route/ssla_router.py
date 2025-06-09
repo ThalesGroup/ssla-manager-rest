@@ -19,7 +19,7 @@ logger = logging.getLogger("uvicorn.default")
              summary="Submit new SSLA",
              response_description="SSLA submission response",
              responses={
-                 200: {"description": "SSLA already exists"},
+                 200: {"description": "SSLA already exists", "model": CreateResponseData},
                  201: {"description": "SSLA properly submitted", "model": CreateResponseData},
                  422: {"description": "The SSLA has the wrong format"}
              },
@@ -45,7 +45,9 @@ async def create_ssla(ssla: "UploadFile" = File(...)):
             # ResponseError must be raised and not returned
             raise ResponseError(message="invalid SSLA", exception=e, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         elif "exist" in str(e):
-            return JSONResponse(content="SSLA already exists")
+            ssla_model = get_spm().ssla_parser.parse_from_content(ssla_content)
+            data = CreateResponseData(status="already exists", services=ssla_model.get_services_names())
+            return JSONResponse(content=data.model_dump(), status_code=status.HTTP_200_OK)
         else:
             raise e
 
@@ -129,7 +131,8 @@ async def get_services():
             summary="GET services level objectives of a submitted SSLA",
             response_description="List of SLOs",
             responses={
-                200: {"description": "List of SLOs successfully retrieved from submitted SSLAs"},
+                200: {"description": "List of SLOs successfully retrieved from submitted SSLAs",
+                      "model": List[SLO]},
                 404: {"description": "No SLOs found"}
             })
 async def get_slos(service: str):
