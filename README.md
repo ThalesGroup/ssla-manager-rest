@@ -15,7 +15,7 @@ Run :
 ```sh
 touch /tmp/ssla.db
 podman run -d \
-  --name sslamanagerrest \
+  --name ssla-manager \
   -p 8081:80 \
   -v /tmp/ssla.db:/data/ssla.db \
   localhost/thales-sslamanager-rest
@@ -54,7 +54,7 @@ Build the wheel file :
 ./build.sh
 ```
 
-To build the container image manually :
+To build the container image :
 
 ```sh
 podman build -f ./Containerfile -t localhost/thales-sslamanager-rest

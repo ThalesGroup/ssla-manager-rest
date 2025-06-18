@@ -1,0 +1,62 @@
+# Copyright 2025 Thales
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#==============================================================================#
+# This container image is based on the GoLang Debian officical image and
+# and embarks Goreleaser "github.com/goreleaser/goreleaser" and GCC for both
+# linux/amd64 (x86_64) and linux/arm64 (aarch64).
+#==============================================================================#
+
+# Set Go & tools versions. Be carreful when upgrading these versions, make sure
+# to keep them in sync with the version golang
+ARG PYTHON_VERSION=3.9
+ARG IMAGE_REGISTRY=docker.io/library
+ARG IMAGE_NAME=python
+
+# Builder image's registry
+ARG BUILDER_IMAGE_TAG=${PYTHON_VERSION}-bookworm
+
+# Run image's registry
+ARG RUN_IMAGE_TAG=${PYTHON_VERSION}-slim-bookworm
+
+# For OCI labels
+# DO NOT REMOVE
+ARG BASE_REGISTRY=${IMAGE_REGISTRY}
+ARG BASE_IMAGE=${IMAGE_NAME}
+ARG BASE_IMAGE_TAG=${RUN_IMAGE_TAG}
+
+#==============================================================================#
+# Python image with support for both linux/amd64 and linux/arm64
+#==============================================================================#
+FROM ${IMAGE_REGISTRY}/${IMAGE_NAME}:${BUILDER_IMAGE_TAG} AS builder-base
+
+WORKDIR /build
+
+RUN apt update
+RUN apt install git vim -y
+
+COPY ./sslamanagerrest/ ./sslamanagerrest/
+COPY build.sh poetry.lock pyproject.toml README.md ./
+
+RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN /root/.local/bin/poetry run python -m pip install --upgrade pip
+
+RUN /root/.local/bin/poetry update
+RUN /root/.local/bin/poetry build
+
+COPY ./deployments/container/config.yaml /app/
+RUN mkdir -p /data/
+
+#CMD ["python", "-m", "sslamanagerrest", "-c", "/app/config.yaml"]
+CMD ["sleep", "infinity"]

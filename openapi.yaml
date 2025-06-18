@@ -168,6 +168,10 @@ paths:
         required: true
       responses:
         '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponseData'
           description: SSLA already exists
         '201':
           content:

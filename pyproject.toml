@@ -27,4 +27,5 @@ sslamanagerrest = 'sslamanagerrest.__main__:main'
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.7.0"
 pytest = "^8.3.5"
+pydevd-pycharm = ">=251.25410.129,<251.25411.0"
 

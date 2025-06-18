@@ -44,13 +44,12 @@ FROM ${IMAGE_REGISTRY}/${IMAGE_NAME}:${BUILDER_IMAGE_TAG} AS builder-base
 WORKDIR /build
 
 COPY ./sslamanagerrest/ ./sslamanagerrest/
-COPY build.sh poetry.lock pyproject.toml README.md ./
+COPY poetry.lock pyproject.toml ./
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN /root/.local/bin/poetry run python -m pip install --upgrade pip
 
-#RUN /root/.local/bin/poetry config repositories.sslamanager https://github.com/ThalesGroup/ssla-manager
-RUN /root/.local/bin/poetry update
+RUN /root/.local/bin/poetry install --without dev
 RUN /root/.local/bin/poetry build
 
 #==============================================================================#
