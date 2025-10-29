@@ -21,7 +21,7 @@ podman run -d \
   localhost/thales-sslamanager-rest
 ```
 
-Try it in your browser at `localhost:8080/docs`.  
+Try it in your browser at `localhost:8081/docs`.  
 You can use the examples in `examples/ssla/` to submit security policies.  
 
 ## OpenAPI specs
