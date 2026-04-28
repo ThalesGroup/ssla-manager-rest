@@ -64,7 +64,7 @@ def init_environment(args):
 
 def dump_openapi_spec():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    with open(f'{current_dir}/../openapi.yaml', 'w') as f:
+    with open(f'{current_dir}/../../openapi.yaml', 'w') as f:
 
         yaml.dump(get_openapi(
             title=app.title,

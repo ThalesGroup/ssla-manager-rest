@@ -7,7 +7,7 @@ Implements a REST API for the [SSLA manager module](https://github.com/ThalesGro
 Install :
 
 ```sh
-podman build -f ./Containerfile -t localhost/thales-sslamanager-rest
+podman build -f ./Containerfile -t localhost/thales-sslamanager-rest .
 ```
 
 Run :
@@ -19,6 +19,13 @@ podman run -d \
   -p 8081:80 \
   -v /tmp/ssla.db:/data/ssla.db \
   localhost/thales-sslamanager-rest
+```
+
+Check :
+
+```sh
+curl localhost:8081/api/v1/health
+> ok
 ```
 
 Try it in your browser at `localhost:8081/docs`.  
@@ -36,28 +43,32 @@ sslamanagerrest --dump-openapi -c /dev/null
 
 ## Development
 
-### Dependencies
-
-You need the SSLA Manager as a dependency for this project :
-
-```sh
-SSLA_MANAGER_VERSION="v0.1.0"
-poetry config repositories.sslamanager https://github.com/ThalesGroup/ssla-manager
-poetry add git+https://github.com/ThalesGroup/ssla-manager#${SSLA_MANAGER_VERSION}
-```
-
 ### Build
+
+You need `uv` for this 
 
 Build the wheel file :
 
 ```sh
-./build.sh
+uv build
 ```
 
 To build the container image :
 
 ```sh
-podman build -f ./Containerfile -t localhost/thales-sslamanager-rest
+podman build -f ./Containerfile -t localhost/thales-sslamanager-rest .
+```
+
+### Dev run
+
+```sh
+uv run sslamanagerrest -c config.yaml
+```
+
+Test with :
+
+```sh
+curl -L localhost:8080/api/v1/health
 ```
 
 ### Install
@@ -73,16 +84,4 @@ Verify :
 ```sh
 # manual with poetry
 sslamanagerrest --help
-```
-
-### Dev run
-
-```sh
-poetry run python -m sslamanagerrest -c config.yaml
-```
-
-Test with :
-
-```sh
-curl -L localhost:8080/api/v1/health
 ```

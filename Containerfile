@@ -20,43 +20,37 @@
 
 # Set Go & tools versions. Be carreful when upgrading these versions, make sure
 # to keep them in sync with the version golang
-ARG PYTHON_VERSION=3.9
 ARG IMAGE_REGISTRY=docker.io/library
-ARG IMAGE_NAME=python
-
-# Builder image's registry
-ARG BUILDER_IMAGE_TAG=${PYTHON_VERSION}-bookworm
-
-# Run image's registry
-ARG RUN_IMAGE_TAG=${PYTHON_VERSION}-slim-bookworm
+ARG BASE_IMAGE=python
+ARG BUILD_IMAGE=${BASE_IMAGE}:3.9
+ARG RUN_IMAGE=${BASE_IMAGE}:3.9-slim-bookworm
 
 # For OCI labels
 # DO NOT REMOVE
 ARG BASE_REGISTRY=${IMAGE_REGISTRY}
-ARG BASE_IMAGE=${IMAGE_NAME}
-ARG BASE_IMAGE_TAG=${RUN_IMAGE_TAG}
+ARG BASE_IMAGE_TAG=${RUN_IMAGE}
 
 #==============================================================================#
 # Python image with support for both linux/amd64 and linux/arm64
 #==============================================================================#
-FROM ${IMAGE_REGISTRY}/${IMAGE_NAME}:${BUILDER_IMAGE_TAG} AS builder-base
+FROM ${IMAGE_REGISTRY}/${BUILD_IMAGE} AS builder-base
+
+#ENV PATH="/root/.local/bin/:$PATH"
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /build
 
-COPY ./sslamanagerrest/ ./sslamanagerrest/
+COPY src/sslamanagerrest/ ./src/sslamanagerrest/
 # DO NOT REMOVE README.md !
-COPY poetry.lock pyproject.toml README.md ./
+# It is used to remain compliant with OCI
+COPY pyproject.toml README.md ./
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
-RUN /root/.local/bin/poetry run python -m pip install --upgrade pip
-
-RUN /root/.local/bin/poetry install --without dev
-RUN /root/.local/bin/poetry build
+RUN uv build
 
 #==============================================================================#
 # Final image
 #==============================================================================#
-FROM ${IMAGE_REGISTRY}/${IMAGE_NAME}:${RUN_IMAGE_TAG}
+FROM ${IMAGE_REGISTRY}/${RUN_IMAGE}
 
 ARG SSLA_MANAGER_VERSION=0.1.0
 ARG SSLA_MANAGER_NAME=sslamanagerrest
@@ -65,11 +59,14 @@ ARG SSLA_MANAGER_PACKAGE=${SSLA_MANAGER_NAME}-${SSLA_MANAGER_VERSION}-py3-none-a
 WORKDIR /app
 
 # git is necessary to install ssla-manager sub-module
-RUN apt update
-RUN apt install git -y
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
 
 COPY --from=builder-base /build/dist/${SSLA_MANAGER_PACKAGE} /app/
-RUN pip install --no-cache-dir /app/${SSLA_MANAGER_PACKAGE}
+
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir /app/${SSLA_MANAGER_PACKAGE}
 
 COPY ./deployments/container/config.yaml /app/
 RUN mkdir -p /data/
