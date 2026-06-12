@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ssla-manager
+description: SSLA Manager — stores and serves security policies in SSLA format
+type: application
+version: 0.1.0
+appVersion: "latest"

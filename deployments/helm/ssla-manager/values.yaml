@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  repository: localhost/ssla-manager
+  tag: latest
+  pullPolicy: IfNotPresent
+
+persistence:
+  # Storage class for the /data PVC. Leave empty to use the cluster default.
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi

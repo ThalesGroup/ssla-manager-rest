@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-ssla-manager
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ssla-manager.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ssla-manager.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ssla-manager.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: ssla-manager
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /etc/ssla-manager/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-ssla-manager-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-ssla-manager-data
