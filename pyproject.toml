@@ -8,11 +8,11 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "fastapi (>=0.120.1,<0.121.0)",
+    "fastapi (>=0.141.1,<0.142.0)",
     "uvicorn (>=0.34.0,<0.35.0)",
     "pyyaml (>=6.0.2,<7.0.0)",
     "pydantic (>=2.10.6,<3.0.0)",
-    "python-multipart (>=0.0.20,<0.0.21)",
+    "python-multipart (>=0.0.30,<0.0.32)",
     "sslamanager @ git+https://github.com/ThalesGroup/ssla-manager@v0.1.3",
 
 ]
