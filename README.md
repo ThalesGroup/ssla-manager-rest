@@ -16,7 +16,7 @@ Run :
 touch /tmp/ssla.db
 podman run -d \
   --name ssla-manager \
-  -p 8081:80 \
+  -p 8080:80 \
   -v /tmp/ssla.db:/data/ssla.db \
   localhost/thales-sslamanager-rest
 ```
@@ -24,12 +24,22 @@ podman run -d \
 Check :
 
 ```sh
-curl localhost:8081/api/v1/health
+curl localhost:8080/api/v1/health
 > ok
 ```
 
-Try it in your browser at `localhost:8081/docs`.  
-You can use the examples in `examples/ssla/` to submit security policies.  
+Try it in your browser at `localhost:8080/docs`.  
+You can use the examples in `examples/ssla/` to submit security policies :
+
+```sh
+# create a new ssla
+curl -X POST http://localhost:8080/api/v1/ssla \
+  -F ssla=@examples/ssla/ssla_tls_server_valid_2.xml
+# verify
+curl localhost:8080/api/v1/ssla/services
+```
+
+For more requests, check at `openapi.yaml`.
 
 ## OpenAPI specs
 

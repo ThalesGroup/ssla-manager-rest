@@ -22,8 +22,8 @@
 # to keep them in sync with the version golang
 ARG IMAGE_REGISTRY=docker.io/library
 ARG BASE_IMAGE=python
-ARG BUILD_IMAGE=${BASE_IMAGE}:3.9
-ARG RUN_IMAGE=${BASE_IMAGE}:3.9-slim-bookworm
+ARG BUILD_IMAGE=${BASE_IMAGE}:3.10
+ARG RUN_IMAGE=${BUILD_IMAGE}-slim-bookworm
 
 # For OCI labels
 # DO NOT REMOVE
@@ -52,7 +52,7 @@ RUN uv build
 #==============================================================================#
 FROM ${IMAGE_REGISTRY}/${RUN_IMAGE}
 
-ARG SSLA_MANAGER_VERSION=0.1.0
+ARG SSLA_MANAGER_VERSION=0.1.1
 ARG SSLA_MANAGER_NAME=sslamanagerrest
 ARG SSLA_MANAGER_PACKAGE=${SSLA_MANAGER_NAME}-${SSLA_MANAGER_VERSION}-py3-none-any.whl
 

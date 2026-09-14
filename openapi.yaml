@@ -99,6 +99,8 @@ info:
   title: SSLA Manager API
   version: 0.1.0
 openapi: 3.1.0
+servers:
+  - url: http://localhost:8080
 paths:
   /api/v1/:
     get:
