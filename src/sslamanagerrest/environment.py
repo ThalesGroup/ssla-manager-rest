@@ -15,7 +15,7 @@ from sslamanager.api import SecurityPolicyManager
 
 from sslamanagerrest.configuration import Configuration
 
-logger = logging.getLogger("uvicorn.default")
+logger = logging.getLogger(__name__)
 
 SPM_CONFIGURATION_PATH = "SPM_CONFIGURATION_PATH"
 

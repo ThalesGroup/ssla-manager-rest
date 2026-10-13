@@ -4,7 +4,7 @@ from fastapi import APIRouter, Response
 
 router = APIRouter()
 
-logger = logging.getLogger("uvicorn.default")
+logger = logging.getLogger(__name__)
 
 
 @router.get("",

@@ -1,11 +1,11 @@
 import logging
-from http.client import HTTPException
 from typing import List, Optional
 
 from fastapi import APIRouter, File, UploadFile, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from lxml.etree import XMLSyntaxError
+from sslamanager.exceptions import SSLAAlreadyExistsException, SSLAException, SSLAFormatException, \
+    SSLAMetricsException, SSLANotFound, SSLAValidationException
 from sslamanager.parser.ssla_parser import SLO, Metric, ServiceProperties
 
 from sslamanagerrest.environment import get_spm
@@ -13,7 +13,16 @@ from sslamanagerrest.route.response import ResponseError, CreateResponseData
 
 router = APIRouter()
 
-logger = logging.getLogger("uvicorn.default")
+logger = logging.getLogger(__name__)
+
+
+def ssla_not_found(service: str, exception: Exception) -> "ResponseError":
+    """
+    Build the 404 error raised when no SSLA is stored for the requested service
+    """
+    logger.warning(f"no SSLA stored for service '{service}': {exception}")
+    return ResponseError(message=f"no SSLA found for service '{service}'", exception=exception,
+                         status=status.HTTP_404_NOT_FOUND)
 
 @router.post("",
              summary="Submit new SSLA",
@@ -33,23 +42,28 @@ async def create_ssla(ssla: "UploadFile" = File(...)):
     logger.debug("POST /ssla")
     ssla_content = await ssla.read()
     try:
-        ssla = get_spm().create_ssla(ssla_content)
-        services_names = ssla.get_services_names()
+        ssla_model = get_spm().create_ssla(ssla_content)
+        services_names = ssla_model.get_services_names()
 
-    except XMLSyntaxError as e:
-        return ResponseError(message="unprocessable SSLA content", exception=e,
-                             status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-    # use 'Exception' instead of custom one because starlette hardly handles custom exceptions
-    except Exception as e:
-        if "invalid SSLA content" in str(e):
-            # ResponseError must be raised and not returned
-            raise ResponseError(message="invalid SSLA", exception=e, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-        elif "exist" in str(e):
-            ssla_model = get_spm().ssla_parser.parse_from_content(ssla_content)
-            data = CreateResponseData(status="already exists", services=ssla_model.get_services_names())
-            return JSONResponse(content=data.model_dump(), status_code=status.HTTP_200_OK)
-        else:
-            raise e
+    except SSLAAlreadyExistsException as e:
+        logger.info(f"SSLA already submitted: {e}")
+        ssla_model = get_spm().ssla_parser.parse_from_content(ssla_content)
+        data = CreateResponseData(status="already exists", services=ssla_model.get_services_names())
+        return JSONResponse(content=data.model_dump(), status_code=status.HTTP_200_OK)
+
+    # the SSLA content is rejected by the builtin XML schemas of the ssla-manager dependency
+    # ResponseError must be raised and not returned, otherwise FastAPI serializes the exception
+    # object itself and the client gets a success status code with an empty body
+    except (SSLAValidationException, SSLAFormatException) as e:
+        logger.exception("unprocessable SSLA content")
+        raise ResponseError(message="unprocessable SSLA content", exception=e,
+                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # any other SSLA level issue (metric, slo, capability, service description)
+    except SSLAException as e:
+        logger.exception("invalid SSLA")
+        raise ResponseError(message="invalid SSLA", exception=e,
+                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     data = CreateResponseData(status="created", services=services_names)
     return JSONResponse(content=data.model_dump(), status_code=status.HTTP_201_CREATED)
@@ -69,14 +83,21 @@ async def update_ssla(ssla: "UploadFile" = File(...)):
     :param ssla: The SSLA XML file to provide as a form-data.
     :return:
     """
-    logger.debug("POST /ssla")
+    logger.debug("PUT /ssla")
     ssla_content = await ssla.read()
 
     try:
         get_spm().update_ssla(ssla_content)
-    except Exception as e:
-        if "not found" in str(e):
-            return ResponseError(message="SSLA not found to update", exception=e, status=status.HTTP_404_NOT_FOUND)
+    except SSLANotFound as e:
+        logger.warning(f"no SSLA to update: {e}")
+        raise ResponseError(message="SSLA not found to update", exception=e, status=status.HTTP_404_NOT_FOUND)
+    except (SSLAValidationException, SSLAFormatException) as e:
+        logger.exception("unprocessable SSLA content")
+        raise ResponseError(message="unprocessable SSLA content", exception=e,
+                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    except SSLAException as e:
+        logger.exception("invalid SSLA")
+        raise ResponseError(message="invalid SSLA", exception=e, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     return JSONResponse(content="SSLA successfully updated")
 
@@ -92,11 +113,8 @@ async def get_ssla(service: str):
     logger.debug(f"GET /ssla/{service}")
     try:
         ssla = str(get_spm().get_ssla_content(service))
-    except Exception as e:
-        if "not found" in str(e):
-            return ResponseError(message="Service not found", exception=e, status=status.HTTP_404_NOT_FOUND)
-        else:
-            raise HTTPException(e)
+    except SSLANotFound as e:
+        raise ssla_not_found(service, e)
 
     return JSONResponse(content=ssla)
 
@@ -137,7 +155,10 @@ async def get_services():
             })
 async def get_slos(service: str):
     logger.debug(f"GET /ssla/slo")
-    slos = get_spm().get_slos_jsonable(service)
+    try:
+        slos = get_spm().get_slos_jsonable(service)
+    except SSLANotFound as e:
+        raise ssla_not_found(service, e)
     serialized_slos: List["SLO"] = []
     for slo in slos:
         slo_encoded = jsonable_encoder(slo)
@@ -155,16 +176,23 @@ async def get_slos(service: str):
 async def get_metrics(service: str, metric: Optional[str] = None):
     logger.debug(f"GET /ssla/metrics")
     serialized_metrics: List["Metric"] = []
-    if metric is not None:
-        # optimized request to look for only one metric
-        metric = get_spm().get_metric_jsonable(service, metric)
-        metric_encoded = jsonable_encoder(metric)
-        serialized_metrics.append(metric_encoded)
-    else:
-        metrics = get_spm().get_metrics_jsonable(service)
-        for metric in metrics:
+    try:
+        if metric is not None:
+            # optimized request to look for only one metric
+            metric = get_spm().get_metric_jsonable(service, metric)
             metric_encoded = jsonable_encoder(metric)
             serialized_metrics.append(metric_encoded)
+        else:
+            metrics = get_spm().get_metrics_jsonable(service)
+            for metric in metrics:
+                metric_encoded = jsonable_encoder(metric)
+                serialized_metrics.append(metric_encoded)
+    except SSLANotFound as e:
+        raise ssla_not_found(service, e)
+    except SSLAMetricsException as e:
+        logger.warning(f"no metric '{metric}' in the SSLA of service '{service}': {e}")
+        raise ResponseError(message=f"no metric found for service '{service}'", exception=e,
+                            status=status.HTTP_404_NOT_FOUND)
 
     return JSONResponse(content=serialized_metrics)
 
@@ -178,7 +206,10 @@ async def get_metrics(service: str, metric: Optional[str] = None):
             })
 async def get_properties(service: str):
     logger.debug(f"GET /ssla/properties")
-    properties = get_spm().get_service_properties_jsonable(service)
+    try:
+        properties = get_spm().get_service_properties_jsonable(service)
+    except SSLANotFound as e:
+        raise ssla_not_found(service, e)
     serialized_properties: List["ServiceProperties"] = []
     for prop in properties:
         prop_encoded = jsonable_encoder(prop)

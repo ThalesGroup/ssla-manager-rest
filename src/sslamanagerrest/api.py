@@ -19,7 +19,7 @@ HEALTH_ROUTER_PREFIX = "/health"
 
 router = APIRouter(prefix=API_ROUTER_PREFIX)
 
-logger = logging.getLogger("uvicorn.default")
+logger = logging.getLogger(__name__)
 
 
 def add_route(api_router: APIRouter, prefix: str):

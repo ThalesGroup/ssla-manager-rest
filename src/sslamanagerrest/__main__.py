@@ -6,24 +6,43 @@ import sys
 
 import uvicorn
 import yaml
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.openapi.utils import get_openapi
+from fastapi.responses import JSONResponse
 
 from sslamanagerrest import api
 from sslamanagerrest.configuration import Configuration
 from sslamanagerrest.environment import set_configuration_path, get_configuration, get_configuration_path, get_spm
 from sslamanagerrest.exceptions import ConfigurationMissingException
+from sslamanagerrest.route.response import format_exception_chain
 
 LOGGING_FORMAT = "%(asctime)s - (%(filename)s:%(lineno)d) - %(levelname)s - %(message)s"
+# the rest api and the ssla-manager dependency: both must reach the console, otherwise
+# the parsing errors logged inside the library are silently dropped by the root logger
+LOGGED_PACKAGES = ("sslamanagerrest", "sslamanager")
 
 app = FastAPI()
 app.include_router(api.router)
 app.title = "SSLA Manager API"
 app.description = "REST API for the ecurity Policy Manager"
 
-logger: logging.Logger
+logger: logging.Logger = logging.getLogger("sslamanagerrest.main")
 
 SPM_CONFIGURATION_PATH = "SPM_CONFIGURATION_PATH"
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: "Request", exception: Exception) -> "JSONResponse":
+    """
+    Last resort handler: log the full traceback and return the error chain instead of
+    an empty '500 Internal Server Error' body.
+    """
+    logger.exception(f"unhandled error on {request.method} {request.url.path}")
+    detail = {"message": "internal server error",
+              "error": type(exception).__name__,
+              "reason": str(exception),
+              "causes": format_exception_chain(exception)[1:]}
+    return JSONResponse(content={"detail": detail}, status_code=500)
 
 
 class Parser:
@@ -46,10 +65,21 @@ class Parser:
 
 
 def init_logger(debug: bool):
-    global logger
-    logger = logging.getLogger("uvicorn.default")
-    level = "DEBUG" if debug else "INFO"
-    logger.setLevel(level=level)
+    """
+    Attach a console handler to the application and dependency loggers.
+    Done here rather than through the uvicorn log config so that logs emitted before the
+    server starts, and logs of the ssla-manager dependency, are printed as well.
+    """
+    level = logging.DEBUG if debug else logging.INFO
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setFormatter(logging.Formatter(LOGGING_FORMAT))
+    for package in LOGGED_PACKAGES:
+        package_logger = logging.getLogger(package)
+        package_logger.setLevel(level)
+        package_logger.handlers.clear()
+        package_logger.addHandler(handler)
+        # uvicorn owns the root logger configuration, do not duplicate records there
+        package_logger.propagate = False
     logger.debug("Debug logs enabled")
 
 
