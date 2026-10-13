@@ -7,7 +7,7 @@ Implements a REST API for the [SSLA manager module](https://github.com/ThalesGro
 Install :
 
 ```sh
-podman build -f ./Containerfile -t localhost/thales-sslamanager-rest .
+podman build -f ./Containerfile -t localhost/thales-ssla-manager .
 ```
 
 Run :
@@ -18,7 +18,7 @@ podman run -d \
   --name ssla-manager \
   -p 8080:80 \
   -v /tmp/ssla.db:/data/ssla.db \
-  localhost/thales-sslamanager-rest
+  localhost/thales-ssla-manager
 ```
 
 Check :
@@ -66,7 +66,7 @@ uv build
 To build the container image :
 
 ```sh
-podman build -f ./Containerfile -t localhost/thales-sslamanager-rest .
+podman build -f ./Containerfile -t localhost/thales-ssla-manager .
 ```
 
 ### Dev run

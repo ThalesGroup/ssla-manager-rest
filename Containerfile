@@ -22,7 +22,7 @@
 # to keep them in sync with the version golang
 ARG IMAGE_REGISTRY=docker.io/library
 ARG BASE_IMAGE=python
-ARG BUILD_IMAGE=${BASE_IMAGE}:3.10
+ARG BUILD_IMAGE=${BASE_IMAGE}:3.14
 ARG RUN_IMAGE=${BUILD_IMAGE}-slim-bookworm
 
 # For OCI labels
@@ -45,6 +45,11 @@ COPY src/sslamanagerrest/ ./src/sslamanagerrest/
 # It is used to remain compliant with OCI
 COPY pyproject.toml README.md ./
 
+# git is necessary to install ssla-manager sub-module
+RUN apt-get update && \
+    apt-get upgrade -y
+
+RUN uv --version
 RUN uv build
 
 #==============================================================================#
@@ -52,7 +57,7 @@ RUN uv build
 #==============================================================================#
 FROM ${IMAGE_REGISTRY}/${RUN_IMAGE}
 
-ARG SSLA_MANAGER_VERSION=0.1.1
+ARG SSLA_MANAGER_VERSION=0.1.2
 ARG SSLA_MANAGER_NAME=sslamanagerrest
 ARG SSLA_MANAGER_PACKAGE=${SSLA_MANAGER_NAME}-${SSLA_MANAGER_VERSION}-py3-none-any.whl
 
@@ -65,8 +70,8 @@ RUN apt-get update && \
 
 COPY --from=builder-base /build/dist/${SSLA_MANAGER_PACKAGE} /app/
 
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir /app/${SSLA_MANAGER_PACKAGE}
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir /app/${SSLA_MANAGER_PACKAGE}
 
 COPY ./deployments/container/config.yaml /app/
 RUN mkdir -p /data/
