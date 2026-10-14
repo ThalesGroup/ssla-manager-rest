@@ -57,7 +57,7 @@ RUN uv build
 #==============================================================================#
 FROM ${IMAGE_REGISTRY}/${RUN_IMAGE}
 
-ARG SSLA_MANAGER_VERSION=0.2.0
+ARG SSLA_MANAGER_VERSION=0.2.1
 ARG SSLA_MANAGER_NAME=sslamanagerrest
 ARG SSLA_MANAGER_PACKAGE=${SSLA_MANAGER_NAME}-${SSLA_MANAGER_VERSION}-py3-none-any.whl
 
