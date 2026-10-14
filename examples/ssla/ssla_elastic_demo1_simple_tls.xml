@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsag:AgreementOffer
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:wsag="http://schemas.ggf.org/graap/2007/03/ws-agreement"
+        xmlns:specs="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
+        xmlns:nist="http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist"
+
+        xsi:schemaLocation=
+                "http://schemas.ggf.org/graap/2007/03/ws-agreement wsag.xsd
+	http://www.specs-project.eu/resources/schemas/xml/SLAtemplate SLAtemplate.xsd
+	http://www.specs-project.eu/resources/schemas/xml/control_frameworks/nist nist.xsd">
+
+    <wsag:Name>Encrypt Network Traffic</wsag:Name>
+    <wsag:Context>
+        <wsag:AgreementInitiator>$SPECS-CUSTOMER</wsag:AgreementInitiator>
+        <wsag:AgreementResponder>specs-owner</wsag:AgreementResponder>
+        <wsag:ServiceProvider>AgreementResponder</wsag:ServiceProvider>
+        <wsag:ExpirationTime>2016-04-30T06:00:00</wsag:ExpirationTime>
+        <wsag:TemplateName>NIST_TLS</wsag:TemplateName>
+    </wsag:Context>
+
+    <wsag:Terms>
+        <wsag:All>
+            <!-- ****************************** SERVICE DESCRIPTION ****************************** -->
+            <!-- Name : the name of the service description term -->
+            <wsag:ServiceDescriptionTerm wsag:Name="Encrypt Network Traffic"
+                                         wsag:ServiceName="elastic-demo1-test">
+                <specs:serviceDescription>
+                    <specs:serviceResources>
+                        <!-- Note : necessary ? -->
+                        <specs:resourcesProvider id="THS" name="Thales" zone="thales" description="" maxAllowedVMs="2"
+                                                 label="">
+                        </specs:resourcesProvider>
+                    </specs:serviceResources>
+
+                    <specs:capabilities>
+                        <!-- ****************************** CAPABILITIES ****************************** -->
+                        <!-- https://csf.tools/reference/cloud-controls-matrix/version-3-0-1/ -->
+                        <specs:capability id="TLS" name="Cryptographic Protection"
+                                          description="Encrypt applications data over the network using TLS"
+                                          mandatory="yes">
+                            <specs:controlFramework id="NIST-SP-800-53-Revision-5" frameworkName="NIST SP 800-53">
+                                <!-- Attribute Definition (SC-8(1)) -->
+                                <specs:NISTsecurityControl
+                                        id="NIST_SC_8_1"
+                                        name="SYSTEM AND COMMUNICATIONS PROTECTION | CRYPTOGRAPHIC OR ALTERNATE PHYSICAL PROTECTION"
+                                        control_family="SC"
+                                        securityControl="8"
+                                        control_enhancement="1">
+                                    <nist:description>
+                                        Implement cryptographic mechanisms to prevent unauthorized disclosure of
+                                        information, detect changes to information during transmission.
+                                    </nist:description>
+                                    <nist:importance_weight>HIGH</nist:importance_weight>
+                                </specs:NISTsecurityControl>
+                            </specs:controlFramework>
+                        </specs:capability>
+                    </specs:capabilities>
+
+                    <!-- ****************************** METRICS ****************************** -->
+                    <!-- each metric includes the abstract metric definition and the concrete metric -->
+                    <!-- security metrics for TLS -->
+                    <specs:security_metrics>
+
+                        <!-- M1 -->
+                        <specs:Metric name="tls_version" referenceId="tls_version">
+                            <specs:MetricDefinition>
+                                <specs:unit name="version">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>string</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+                                                <specs:value>1.2</specs:value>
+                                                <specs:description>Only use TLS 1.2</specs:description>
+                                            </specs:enumItem>
+                                            <specs:enumItem>
+                                                <specs:value>1.3</specs:value>
+                                                <specs:description>Only use TLS 1.3</specs:description>
+                                            </specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Qualitative>Nominal</specs:Qualitative>
+                                </specs:scale>
+                                <specs:expression>TLS version</specs:expression>
+                                <specs:definition>This metric defines the TLS version to use</specs:definition>
+                                <specs:note>TLS</specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+
+                        <specs:Metric name="tls_hsts" referenceId="tls_hsts">
+                            <specs:MetricDefinition>
+                                <specs:unit name="enable">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>boolean</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+                                                <specs:value>true</specs:value>
+                                                <specs:description>Force HTTP Strict Transport Security</specs:description>
+                                            </specs:enumItem>
+                                            <specs:enumItem>
+                                                <specs:value>false</specs:value>
+                                                <specs:description>Disable HTTP Strict Transport Security</specs:description>
+                                            </specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Qualitative>Nominal</specs:Qualitative>
+                                </specs:scale>
+                                <specs:expression>HTTPS Strict Transport Security</specs:expression>
+                                <specs:definition>This metric sets the usage of HSTS</specs:definition>
+                                <specs:note>TLS</specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+
+                        <specs:Metric name="tls_termination" referenceId="tls_termination">
+                            <specs:MetricDefinition>
+                                <specs:unit name="enable">
+                                    <specs:enumUnit>
+                                        <specs:enumItemsType>boolean</specs:enumItemsType>
+                                        <specs:enumItems>
+                                            <specs:enumItem>
+                                                <specs:value>true</specs:value>
+                                                <specs:description>Disable SSL passthrough for services</specs:description>
+                                            </specs:enumItem>
+                                            <specs:enumItem>
+                                                <specs:value>false</specs:value>
+                                                <specs:description>Enable SSL passthrough for services</specs:description>
+                                            </specs:enumItem>
+                                        </specs:enumItems>
+                                    </specs:enumUnit>
+                                </specs:unit>
+                                <specs:scale>
+                                    <specs:Qualitative>Nominal</specs:Qualitative>
+                                </specs:scale>
+                                <specs:expression>SSL passthrough</specs:expression>
+                                <specs:definition>This metric sets the usage of SSL passthrough for backend services</specs:definition>
+                                <specs:note>TLS</specs:note>
+                            </specs:MetricDefinition>
+                        </specs:Metric>
+
+                    </specs:security_metrics>
+                </specs:serviceDescription>
+            </wsag:ServiceDescriptionTerm>
+
+
+            <!-- not sure if necessary here -->
+            <!-- <wsag:ServiceReference wsag:Name="SecureWebServer" wsag:ServiceName="SecureWebServer">
+                <specs:endpoint>http://specs/application-endpoint</specs:endpoint>
+            </wsag:ServiceReference> -->
+
+
+            <wsag:ServiceProperties wsag:Name="//specs:capability[@id='TLS']" wsag:ServiceName="elastic-demo1-test">
+                <wsag:VariableSet>
+                    <wsag:Variable wsag:Name="specs_TLS_M1" wsag:Metric="tls_version">
+                        <wsag:Location>//specs:NISTsecurityControl[@id='SC-8(1)']</wsag:Location>
+                    </wsag:Variable>
+                    <wsag:Variable wsag:Name="specs_TLS_M2" wsag:Metric="tls_hsts">
+                        <wsag:Location>//specs:NISTsecurityControl[@id='SC-8(1)']</wsag:Location>
+                    </wsag:Variable>
+                    <wsag:Variable wsag:Name="specs_TLS_M3" wsag:Metric="tls_termination">
+                        <wsag:Location>//specs:NISTsecurityControl[@id='SC-8(1)']</wsag:Location>
+                    </wsag:Variable>
+                </wsag:VariableSet>
+            </wsag:ServiceProperties>
+
+            <!-- TLS related SLOs -->
+            <wsag:GuaranteeTerm wsag:Name="//specs:capability[@id='TLS']" wsag:Obligated="ServiceProvider">
+
+                <wsag:ServiceLevelObjective>
+                    <wsag:CustomServiceLevel>
+                        <specs:objectiveList>
+
+                            <specs:SLO SLO_ID="tls_slo1">
+                                <specs:MetricREF>tls_version</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>eq</specs:operator>
+                                        <specs:operand>1.3</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+
+                            <specs:SLO SLO_ID="tls_slo2">
+                                <specs:MetricREF>tls_hsts</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>eq</specs:operator>
+                                        <specs:operand>true</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+
+                            <specs:SLO SLO_ID="tls_termination">
+                                <specs:MetricREF>tls_version</specs:MetricREF>
+                                <specs:SLOexpression>
+                                    <specs:oneOpExpression>
+                                        <specs:operator>eq</specs:operator>
+                                        <specs:operand>true</specs:operand>
+                                    </specs:oneOpExpression>
+                                </specs:SLOexpression>
+                                <specs:importance_weight>HIGH</specs:importance_weight>
+                            </specs:SLO>
+
+                        </specs:objectiveList>
+                    </wsag:CustomServiceLevel>
+                </wsag:ServiceLevelObjective>
+                <wsag:BusinessValueList></wsag:BusinessValueList>
+            </wsag:GuaranteeTerm>
+
+        </wsag:All>
+    </wsag:Terms>
+</wsag:AgreementOffer>

@@ -13,7 +13,7 @@ dependencies = [
     "pyyaml (>=6.0.2,<7.0.0)",
     "pydantic (>=2.10.6,<3.0.0)",
     "python-multipart (>=0.0.30,<0.0.32)",
-    "sslamanager @ git+https://github.com/ThalesGroup/ssla-manager.git@v0.1.4",
+    "sslamanager @ git+https://github.com/ThalesGroup/ssla-manager.git@v0.1.5",
 
 ]
 
@@ -23,7 +23,6 @@ build-backend = "uv_build"
 
 [tool.uv]
 package = true
-
 [dependency-groups]
 dev = [
     "uv-build>=0.7.14",

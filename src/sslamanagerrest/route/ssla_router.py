@@ -65,6 +65,12 @@ async def create_ssla(ssla: "UploadFile" = File(...)):
         raise ResponseError(message="invalid SSLA", exception=e,
                             status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # any other exception uncatched
+    except Exception as e:
+        msg = "unknown error"
+        logger.exception(msg)
+        raise ResponseError(message=msg, exception=e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     data = CreateResponseData(status="created", services=services_names)
     return JSONResponse(content=data.model_dump(), status_code=status.HTTP_201_CREATED)
 
